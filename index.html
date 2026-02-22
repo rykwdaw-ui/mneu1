@@ -81,7 +81,7 @@
 
         /* --- الهيدر --- */
         header {
-            padding: 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -94,35 +94,52 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .main-total-display {
+            background: rgba(255, 140, 0, 0.1);
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .cart-icon-container {
             position: relative;
             cursor: pointer;
-            padding: 12px;
+            padding: 10px;
             background: var(--dark-light);
             border-radius: 12px;
             transition: var(--transition);
         }
 
-        /* تأثير النبض عند وجود طلبات */
         .cart-icon-container.animate-cart {
             animation: cartPulse 0.6s ease;
         }
 
         @keyframes cartPulse {
-            0% { transform: scale(1); background: var(--dark-light); }
+            0% { transform: scale(1); }
             50% { transform: scale(1.2); background: var(--primary); }
-            100% { transform: scale(1); background: var(--dark-light); }
+            100% { transform: scale(1); }
         }
 
-        /* نقطة تنبيه إضافية بجانب العربة */
         .cart-dot {
             position: absolute;
             top: 2px;
@@ -147,30 +164,29 @@
             right: -5px;
             background: var(--white);
             color: var(--primary);
-            font-size: 0.75rem;
-            width: 22px;
-            height: 22px;
+            font-size: 0.7rem;
+            width: 20px;
+            height: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 50%;
             font-weight: bold;
-            box-shadow: 0 0 10px var(--primary);
         }
 
         /* --- الأقسام --- */
         .hero {
-            padding: 80px 20px;
+            padding: 60px 20px;
             text-align: center;
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=1200');
             background-size: cover;
             background-position: center;
             border-radius: 0 0 50px 50px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .hero h1 {
-            font-size: 2.8rem;
+            font-size: 2.2rem;
             margin-bottom: 10px;
             color: var(--primary);
             animation: slideDown 1s ease;
@@ -180,13 +196,14 @@
         .category-tabs {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 10px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
+            padding: 0 10px;
         }
 
         .tab-btn {
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
             background: var(--dark-light);
             color: var(--white);
@@ -194,18 +211,19 @@
             cursor: pointer;
             font-weight: bold;
             transition: var(--transition);
+            font-size: 0.9rem;
         }
 
         .tab-btn.active {
             background: var(--primary);
-            box-shadow: 0 10px 20px rgba(255, 140, 0, 0.3);
+            box-shadow: 0 8px 15px rgba(255, 140, 0, 0.3);
         }
 
         /* --- شبكة الوجبات --- */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 20px;
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
@@ -228,13 +246,13 @@
         }
 
         .food-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-8px);
             border-color: var(--primary);
         }
 
         .food-img-container {
             width: 100%;
-            height: 200px;
+            height: 180px;
             overflow: hidden;
             position: relative;
             background-color: #222;
@@ -247,36 +265,31 @@
             transition: transform 0.5s ease;
         }
 
-        .food-card:hover .food-img {
-            transform: scale(1.1);
-        }
-
         .food-info {
-            padding: 20px;
+            padding: 15px;
         }
 
         .food-name {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .food-price {
             color: var(--primary);
             font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 12px;
+            font-size: 1rem;
+            margin-bottom: 10px;
         }
 
         .rating {
             display: flex;
-            gap: 5px;
-            margin-bottom: 15px;
+            gap: 3px;
+            margin-bottom: 12px;
         }
 
         .star {
-            cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #444;
         }
 
@@ -286,7 +299,7 @@
 
         .add-btn {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: none;
             background: var(--primary);
             color: white;
@@ -315,7 +328,7 @@
             background: var(--dark-light);
             z-index: 200;
             transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            padding: 30px;
+            padding: 25px;
             box-shadow: -10px 0 30px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
@@ -329,7 +342,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-bottom: 1px solid #333;
             padding-bottom: 15px;
         }
@@ -341,17 +354,90 @@
 
         .cart-item {
             display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .cart-item-top {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+
+        .cart-item-controls {
+            display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--dark);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .qty-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .remove-single-btn {
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .table-input-container {
+            background: rgba(255, 140, 0, 0.1);
+            padding: 15px;
+            border-radius: 12px;
             margin-bottom: 15px;
-            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--primary);
+        }
+
+        .table-input-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .table-input-container input {
+            width: 100%;
             padding: 10px;
-            border-radius: 10px;
+            background: var(--dark);
+            border: 1px solid #444;
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-align: center;
         }
 
         .whatsapp-btn {
             background: #25D366 !important;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .toast {
@@ -372,14 +458,16 @@
         }
 
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-30px); }
+            from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 600px) {
-            .hero h1 { font-size: 1.8rem; }
+            .hero h1 { font-size: 1.6rem; }
             .menu-grid { grid-template-columns: 1fr; }
             .cart-modal { max-width: 100%; }
+            .logo { font-size: 1.1rem; }
+            .main-total-display { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -394,25 +482,34 @@
 
     <header>
         <div class="logo">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M11,9H9V2H7V9H5V2H3V9C3,11.12 4.66,12.84 6.75,12.97V22H9.25V12.97C11.34,12.84 13,11.12 13,9V2H11V9M16,6V14H18.5V22H21V2C18.24,2 16,4.24 16,6Z" /></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11,9H9V2H7V9H5V2H3V9C3,11.12 4.66,12.84 6.75,12.97V22H9.25V12.97C11.34,12.84 13,11.12 13,9V2H11V9M16,6V14H18.5V22H21V2C18.24,2 16,4.24 16,6Z" /></svg>
             فخامة الرافدين
         </div>
-        <div class="cart-icon-container" id="cart-container" onclick="toggleCart()">
-            <span class="cart-dot" id="cart-dot"></span>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-            <span class="cart-badge" id="cart-count">0</span>
+        <div class="header-actions">
+            <!-- المبلغ الإجمالي في الواجهة الرئيسية -->
+            <div class="main-total-display" id="main-total-ui">
+                <span>الحساب:</span>
+                <span id="header-total">0 د.ع</span>
+            </div>
+            
+            <div class="cart-icon-container" id="cart-container" onclick="toggleCart()">
+                <span class="cart-dot" id="cart-dot"></span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span class="cart-badge" id="cart-count">0</span>
+            </div>
         </div>
     </header>
 
     <section class="hero">
-        <h1>تذوّق عراقة الماضي وحداثة الحاضر</h1>
-        <p style="color: #ddd;">أفخم الوجبات العراقية والعالمية بين يديك في قلب العراق</p>
+        <h1>تذوق عراقة الماضي وحداثة الحاضر</h1>
+        <p style="color: #ddd;">أفخم الوجبات العالمية بذوق عراقي بين يديك</p>
     </section>
 
     <div class="category-tabs">
         <button class="tab-btn active" onclick="filterMenu('all')">الكل</button>
         <button class="tab-btn" onclick="filterMenu('western')">الغربية</button>
         <button class="tab-btn" onclick="filterMenu('eastern')">الشرقية</button>
+        <button class="tab-btn" onclick="filterMenu('drinks')">المشروبات</button>
     </div>
 
     <div class="menu-grid" id="menu-container"></div>
@@ -422,14 +519,19 @@
             <h2>قائمة طلباتك</h2>
             <span style="cursor:pointer; font-size:1.5rem;" onclick="toggleCart()">&times;</span>
         </div>
+
+        <div class="table-input-container">
+            <label for="table-number">رقم الطاولة:</label>
+            <input type="number" id="table-number" placeholder="ادخل رقم طاولتك">
+        </div>
+
         <div class="cart-items-list" id="cart-items"></div>
-        <div style="margin-top:20px; border-top:1px solid #444; padding-top:15px;">
-            <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--primary); font-size:1.2rem;">
+        <div style="margin-top:15px; border-top:1px solid #444; padding-top:10px;">
+            <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--primary); font-size:1.1rem;">
                 <span>المجموع الكلي:</span>
-                <span id="total-price">0 د.ع</span>
+                <span id="modal-total-price">0 د.ع</span>
             </div>
             <button class="add-btn whatsapp-btn" onclick="sendToWhatsApp()">
-                <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M12.012 2c-5.508 0-9.987 4.479-9.987 9.988 0 1.757.455 3.407 1.253 4.847l-1.332 4.865 4.978-1.306c1.408.767 3.012 1.205 4.717 1.205 5.508 0 9.988-4.479 9.988-9.988 0-5.509-4.48-9.988-9.988-9.988zm5.405 14.126c-.23.651-1.341 1.23-1.854 1.305-.443.065-.964.084-1.549-.101-.357-.113-.812-.266-1.393-.513-2.467-1.054-4.059-3.558-4.183-3.723-.124-.165-1.012-1.345-1.012-2.56 0-1.215.636-1.812.862-2.06.225-.247.49-.308.653-.308.163 0 .326.001.469.008.148.007.348-.056.544.417.196.474.673 1.64.732 1.762.059.121.098.262.019.419-.079.157-.118.256-.236.392-.118.137-.247.306-.353.411-.118.115-.241.241-.103.477.138.236.613 1.012 1.314 1.636.901.802 1.66 1.05 1.896 1.168.236.118.373.099.511-.059.138-.158.59-.687.747-.92.158-.233.315-.196.533-.118.217.079 1.376.649 1.612.766.236.118.393.177.451.276.059.1.059.58-.171 1.23z"/></svg>
                 تأكيد عبر واتساب
             </button>
         </div>
@@ -438,10 +540,8 @@
     <div class="toast" id="toast">تمت الإضافة!</div>
 
     <script>
-        // مصفوفة البيانات مع روابط صور محدثة
         const menuItems = [
-            // الغربية
-            { id: 1, name: "بيتزا مارجريتا", category: "western", price: 8000, rating: 4, img: "https://images.unsplash.com/photo-1574071318508-1cdbad80ad38?auto=format&fit=crop&q=60&w=500" },
+            { id: 1, name: "ريزو", category: "western", price: 7000, rating: 5, img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&q=60&w=500" },
             { id: 2, name: "بيتزا بيبروني", category: "western", price: 10000, rating: 5, img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&q=60&w=500" },
             { id: 3, name: "برغر لحم كلاسيك", category: "western", price: 7500, rating: 4, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=60&w=500" },
             { id: 4, name: "برغر دبل تشيز", category: "western", price: 9000, rating: 5, img: "https://images.unsplash.com/photo-1550317143-b302089f4a21?auto=format&fit=crop&q=60&w=500" },
@@ -464,12 +564,18 @@
             { id: 20, name: "برياني عراقي", category: "eastern", price: 10000, rating: 4, img: "https://images.unsplash.com/photo-1589302168068-964664d93dc9?auto=format&fit=crop&q=60&w=500" },
             { id: 21, name: "دولمة عراقية", category: "eastern", price: 12000, rating: 5, img: "https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&q=60&w=500" },
             { id: 22, name: "مرق بامية", category: "eastern", price: 8000, rating: 5, img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=60&w=500" },
-            { id: 23, name: "مرق فاصوليا", category: "eastern", price: 7000, rating: 4, img: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&q=60&w=500" }, // تم تغيير الصورة لمرق أحمر
+            { id: 23, name: "مرق فاصوليا", category: "eastern", price: 7000, rating: 4, img: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&q=60&w=500" }, 
             { id: 24, name: "تشريب لحم", category: "eastern", price: 16000, rating: 5, img: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?auto=format&fit=crop&q=60&w=500" },
-            { id: 25, name: "مسكوف عراقي", category: "eastern", price: 35000, rating: 5, img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=60&w=500" }
+            { id: 25, name: "مسكوف عراقي", category: "eastern", price: 35000, rating: 5, img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=60&w=500" },
+            // المشروبات
+            { id: 26, name: "ماء", category: "drinks", price: 500, rating: 5, img: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&q=60&w=500" },
+            { id: 27, name: "ببسي", category: "drinks", price: 500, rating: 5, img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&q=60&w=500" }, 
+            { id: 28, name: "ميرندا", category: "drinks", price: 500, rating: 5, img: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&q=60&w=500" }, 
+            { id: 29, name: "شاي", category: "drinks", price: 500, rating: 5, img: "https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?auto=format&fit=crop&q=60&w=500" },
+            { id: 30, name: "لبن", category: "drinks", price: 500, rating: 5, img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=60&w=500" }
         ];
 
-        let cart = [];
+        let cart = []; // مصفوفة السلة ستخزن كائنات تحتوي على الوجبة والكمية
 
         window.onload = () => {
             setTimeout(() => {
@@ -478,7 +584,7 @@
                     document.getElementById('loader').style.display = 'none';
                     renderMenu('all');
                 }, 800);
-            }, 1500);
+            }, 1000);
         };
 
         function renderMenu(category) {
@@ -496,7 +602,7 @@
                     <div class="food-info">
                         <div class="food-name">${item.name}</div>
                         <div class="food-price">${item.price.toLocaleString()} د.ع</div>
-                        <div class="rating">${generateStars(item.rating, item.id)}</div>
+                        <div class="rating">${generateStars(item.rating)}</div>
                         <button class="add-btn" onclick="addToCart(${item.id})">أضف للطلب</button>
                     </div>
                 `;
@@ -505,7 +611,7 @@
             });
         }
 
-        function generateStars(rating, id) {
+        function generateStars(rating) {
             let starsHtml = '';
             for (let i = 1; i <= 5; i++) {
                 starsHtml += `<span class="star ${i <= rating ? 'active' : ''}">★</span>`;
@@ -519,49 +625,88 @@
             renderMenu(category);
         }
 
+        // منطق السلة المطور
         function addToCart(id) {
             const item = menuItems.find(i => i.id === id);
-            cart.push(item);
+            const existingItem = cart.find(c => c.id === id);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+            
             updateCartUI();
             
-            // إضافة تأثير الحركة للعربة
+            // انيميشن العربة
             const cartContainer = document.getElementById('cart-container');
             cartContainer.classList.remove('animate-cart');
-            void cartContainer.offsetWidth; // Trigger reflow
+            void cartContainer.offsetWidth; 
             cartContainer.classList.add('animate-cart');
 
-            // إظهار نقطة التنبيه
             document.getElementById('cart-dot').style.display = 'block';
-
             showToast(`تمت إضافة ${item.name}`);
         }
 
+        function decreaseQty(id) {
+            const existingItem = cart.find(c => c.id === id);
+            if (existingItem) {
+                if (existingItem.quantity > 1) {
+                    existingItem.quantity -= 1;
+                } else {
+                    cart = cart.filter(c => c.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(c => c.id !== id);
+            updateCartUI();
+        }
+
         function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
             const itemsContainer = document.getElementById('cart-items');
             itemsContainer.innerHTML = '';
+            
             let total = 0;
-            cart.forEach((item, index) => {
-                total += item.price;
+            let count = 0;
+
+            cart.forEach((item) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                count += item.quantity;
+
                 itemsContainer.innerHTML += `
                     <div class="cart-item">
-                        <span>${item.name}</span>
-                        <span>${item.price.toLocaleString()} د.ع</span>
-                        <span style="color:red; cursor:pointer;" onclick="removeFromCart(${index})">✕</span>
+                        <div class="cart-item-top">
+                            <span>${item.name}</span>
+                            <span>${itemTotal.toLocaleString()} د.ع</span>
+                        </div>
+                        <div class="cart-item-controls">
+                            <div class="qty-controls">
+                                <button class="qty-btn" onclick="decreaseQty(${item.id})">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="qty-btn" onclick="addToCart(${item.id})">+</button>
+                            </div>
+                            <span class="remove-single-btn" onclick="removeFromCart(${item.id})">حذف</span>
+                        </div>
                     </div>
                 `;
             });
-            document.getElementById('total-price').innerText = total.toLocaleString() + ' د.ع';
+
+            // تحديث الأرقام في كل مكان
+            const totalText = total.toLocaleString() + ' د.ع';
+            document.getElementById('cart-count').innerText = count;
+            document.getElementById('modal-total-price').innerText = totalText;
             
-            // إخفاء النقطة إذا كانت السلة فارغة
+            // تحديث السعر الإجمالي في الواجهة الرئيسية (الهيدر)
+            document.getElementById('header-total').innerText = totalText;
+            
             if(cart.length === 0) {
                 document.getElementById('cart-dot').style.display = 'none';
+                itemsContainer.innerHTML = '<p style="text-align:center; padding:20px; color:var(--gray);">السلة فارغة</p>';
             }
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
         }
 
         function toggleCart() {
@@ -576,25 +721,30 @@
         }
 
         function sendToWhatsApp() {
+            const tableNum = document.getElementById('table-number').value;
+
             if (cart.length === 0) {
                 showToast("السلة فارغة!");
                 return;
             }
 
-            let message = "🍱 *طلب جديد من فخامة الرافدين* 🍱\n\n";
-            let total = 0;
-            const summary = {};
-            cart.forEach(item => {
-                summary[item.name] = (summary[item.name] || 0) + 1;
-                total += item.price;
-            });
-
-            for (const [name, qty] of Object.entries(summary)) {
-                message += `▪️ *${name}* (العدد: ${qty})\n`;
+            if (!tableNum) {
+                showToast("يرجى تحديد رقم الطاولة!");
+                return;
             }
 
+            let message = "🍱 *طلب جديد من فخامة الرافدين* 🍱\n";
+            message += `🪑 *رقم الطاولة:* ${tableNum}\n\n`;
+            
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                message += `▪️ *${item.name}* \n   الكمية: ${item.quantity} | السعر: ${itemTotal.toLocaleString()} د.ع\n`;
+            });
+
             message += `\n💰 *المجموع الكلي:* ${total.toLocaleString()} د.ع`;
-            message += `\n\n📍 يرجى تزويدنا بالعنوان لتأكيد التوصيل.`;
+            message += `\n\n📍 تم الطلب عبر المنيو الإلكتروني.`;
 
             const phone = "9647803540728";
             const encodedMessage = encodeURIComponent(message);
