@@ -1,60 +1,358 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دعوة تخرج | حسين عادل صبري</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- خطوط عربية -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Alexandria', 'IBM Plex Sans Arabic', sans-serif;
-            background-color: #030712;
-            color: #f8fafc;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-        .amiri-font { font-family: 'Amiri', serif; }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-        .gold-border {
-            border: 1.5px solid rgba(212, 175, 55, 0.4);
-        }
-        .cloud-shape {
-            position: absolute;
-            background: radial-gradient(circle, rgba(224, 242, 254, 0.28) 0%, rgba(186, 230, 253, 0.12) 60%, rgba(255, 255, 255, 0) 80%);
-            border-radius: 50%;
-            filter: blur(35px);
-            pointer-events: none;
-        }
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-20px) scale(1.04); }
-        }
-        .animate-float-slow {
-            animation: floatSlow 8s ease-in-out infinite;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>دعوة تخرج | حسين عادل صبري</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Arabic Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'IBM Plex Sans Arabic', 'Alexandria', sans-serif;
+      background-color: #0f172a;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    .font-quran { font-family: 'Amiri', serif; }
+    .font-alexandria { font-family: 'Alexandria', sans-serif; }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-16px) scale(1.02); }
+    }
+    @keyframes driftRight {
+      0% { transform: translateX(-3%); }
+      100% { transform: translateX(3%); }
+    }
+    @keyframes goldenPulse {
+      0%, 100% { opacity: 0.35; filter: blur(35px); }
+      50% { opacity: 0.65; filter: blur(55px); }
+    }
+    @keyframes lightBeam {
+      0%, 100% { opacity: 0.2; transform: rotate(-15deg); }
+      50% { opacity: 0.45; transform: rotate(-12deg); }
+    }
+
+    .animate-float-slow { animation: floatSlow 12s ease-in-out infinite; }
+    .animate-drift { animation: driftRight 24s ease-in-out infinite alternate; }
+    .animate-golden-pulse { animation: goldenPulse 7s ease-in-out infinite; }
+    .animate-light-beam { animation: lightBeam 9s ease-in-out infinite; }
+    
+    .gold-border-glow {
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(212, 175, 55, 0.15);
+    }
+    .cinematic-blur {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+  </style>
 </head>
 <body class="selection:bg-amber-500/30">
 
-    <!-- أزرار التحكم العلوية -->
-    <div class="fixed top-6 left-6 z-50 flex items-center gap-3">
-        <button id="audio-toggle-btn" onclick="toggleAudio()" class="hidden glass-panel gold-border p-3 rounded-full hover:bg-white/10 transition-all duration-300 text-amber-300 shadow-lg">
-            <span id="audio-icon">🔊</span>
-        </button>
-        <button onclick="shareInvite()" class="glass-panel gold-border px-4 py-2.5 rounded-full hover:bg-white/10 transition-all duration-300 text-xs font-semibold text-amber-200 flex items-center gap-2 shadow-lg">
-            <span>مشاركة</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-        </button>
+  <!-- الشريط العلوي -->
+  <header class="fixed top-4 left-4 right-4 z-50 flex items-center justify-between pointer-events-none">
+    <button id="audio-toggle-btn" onclick="toggleAudio()" class="hidden pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-slate-800 shadow-lg backdrop-blur border border-white/60 transition-all active:scale-95 text-xs font-semibold">
+      <span id="audio-icon">🔊</span>
+      <span id="audio-text">تشغيل الصوت</span>
+    </button>
+    <div id="audio-placeholder"></div>
+
+    <button onclick="handleShare()" class="pointer-events-auto flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold shadow-lg transition-all active:scale-95">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+      <span>مشاركة</span>
+    </button>
+  </header>
+
+  <!-- إشعار النسخ -->
+  <div id="copy-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full bg-slate-900 text-amber-300 border border-amber-500/40 shadow-xl text-xs font-medium animate-bounce">
+    تم نسخ رابط الدعوة بنجاح!
+  </div>
+
+  <!-- القسم 1: المشهد السماوي الافتتاحي -->
+  <section id="hero-section" class="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#b8ddf8] via-[#e2f0fb] to-[#f4f9fd] px-6 py-16 select-none">
+    
+    <!-- إضاءات وغيوم -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[600px] h-[450px] bg-amber-300/35 rounded-full animate-golden-pulse"></div>
+      <div class="absolute top-[5%] left-[-10%] w-[600px] h-[300px] bg-white/50 rounded-full blur-[70px] animate-drift"></div>
+      <div class="absolute bottom-0 right-[-10%] w-[700px] h-[400px] bg-white/70 rounded-full blur-[60px] animate-float-slow"></div>
     </div>
 
-    <!-- 1. المشهد الافتتاحي
+    <!-- البسملة -->
+    <div class="relative z-10 pt-4 flex flex-col items-center">
+      <div class="w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center border border-amber-300 text-amber-600">
+        ✨
+      </div>
+      <span class="text-[11px] tracking-widest text-slate-500 mt-2">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
+    </div>
+
+    <!-- النص القرآني / الدعاء -->
+    <div class="relative z-10 max-w-3xl mx-auto text-center px-4 my-auto space-y-6">
+      <p class="font-quran text-2xl sm:text-4xl md:text-5xl text-slate-800 leading-relaxed drop-shadow-sm">
+        الحمد لله الذي هيّأ البدء، وبشّر باليسر، وطيّب المنتهى،
+      </p>
+      <p class="font-quran text-2xl sm:text-4xl md:text-5xl text-amber-900 leading-relaxed drop-shadow-sm">
+        الحمد لله الذي أغدقني سروراً، وجعل طريقي يسيراً.
+      </p>
+    </div>
+
+    <!-- زر الانتقال -->
+    <div class="relative z-10 pb-6 text-center">
+      <button onclick="handleDescent()" class="inline-flex flex-col items-center gap-2 px-8 py-3.5 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-xl border border-amber-300/80 transition-all hover:scale-105 active:scale-95">
+        <span class="text-sm font-bold flex items-center gap-2">
+          <span class="text-amber-600">✨</span>
+          مشاهدة بطاقة الدعوة
+        </span>
+        <svg class="w-4 h-4 text-amber-600 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- القسم 2: البطاقة والتفاصيل والعد التنازلي -->
+  <section id="invitation-section" class="relative w-full min-h-screen py-16 px-4 sm:px-6 bg-gradient-to-b from-[#f4f9fd] via-[#eef6fc] to-[#0f172a] flex flex-col items-center">
+    
+    <div class="relative z-10 max-w-2xl w-full mx-auto space-y-10">
+      
+      <!-- بطاقة الدعوة -->
+      <div class="relative bg-white/95 cinematic-blur rounded-3xl p-6 sm:p-10 shadow-2xl border border-amber-200 gold-border-glow text-center">
+        
+        <!-- شارة الترحيب -->
+        <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold mb-4">
+          <span>✨</span>
+          بكل حب وامتنان
+          <span>✨</span>
+        </div>
+
+        <h2 class="text-base sm:text-lg text-slate-700 max-w-lg mx-auto mb-6">
+          يسعدني ويشرفني حضوركم لتشاركوني فرحة التخرج بعد سنوات من الجهد والتعب
+        </h2>
+
+        <!-- صورة الخريج المباشرة -->
+        <div class="my-6 flex flex-col items-center">
+          <div class="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full p-1.5 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-xl">
+            <div class="w-full h-full rounded-full overflow-hidden bg-slate-100 border-2 border-white">
+              <img 
+                id="graduate-img"
+                src="https://images2.imgbox.com/39/38/c1v8f86R_o.png" 
+                alt="حسين عادل صبري"
+                class="w-full h-full object-cover object-top"
+                loading="eager"
+                onerror="this.onerror=null; this.src='graduate.jpg';"
+              />
+            </div>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-5 font-alexandria">
+            حسين عادل صبري
+          </h1>
+          <p class="text-base sm:text-lg font-semibold text-amber-700 mt-1">
+            هندسة تقنيات الأجهزة الطبية
+          </p>
+          <p class="text-sm text-slate-500">
+            جامعة الكوت
+          </p>
+        </div>
+
+        <!-- تاريخ الحفل -->
+        <div class="mt-6 pt-4 border-t border-amber-100">
+          <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider block mb-1">موعدنا معكم</span>
+          <div class="inline-block px-6 py-2 rounded-xl bg-amber-50 border border-amber-200 text-slate-800 font-bold text-base">
+            الأحد، 22 نوفمبر 2026
+          </div>
+        </div>
+      </div>
+
+      <!-- العد التنازلي: يبدأ من اليسار (أيام -> ساعات -> دقائق -> ثوانٍ) -->
+      <div class="space-y-4">
+        <div class="text-center">
+          <span class="text-xs uppercase font-bold tracking-widest text-amber-400">العد التنازلي للحفل</span>
+          <h3 id="countdown-status" class="text-xl sm:text-2xl font-bold text-white mt-1">
+            ننتظركم بكل محبة
+          </h3>
+        </div>
+
+        <div id="countdown-boxes" dir="ltr" class="grid grid-cols-4 gap-2.5 sm:gap-4">
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-5 border border-white/20 text-center">
+            <div id="days-val" class="text-2xl sm:text-4xl font-extrabold text-white font-mono">00</div>
+            <div class="text-[11px] sm:text-xs font-semibold text-slate-300 mt-1">أيام</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-5 border border-white/20 text-center">
+            <div id="hours-val" class="text-2xl sm:text-4xl font-extrabold text-white font-mono">00</div>
+            <div class="text-[11px] sm:text-xs font-semibold text-slate-300 mt-1">ساعات</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-5 border border-white/20 text-center">
+            <div id="minutes-val" class="text-2xl sm:text-4xl font-extrabold text-white font-mono">00</div>
+            <div class="text-[11px] sm:text-xs font-semibold text-slate-300 mt-1">دقائق</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-5 border border-white/20 text-center">
+            <div id="seconds-val" class="text-2xl sm:text-4xl font-extrabold text-white font-mono">00</div>
+            <div class="text-[11px] sm:text-xs font-semibold text-slate-300 mt-1">ثوانٍ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- تفاصيل الحفل -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0 text-lg">
+            📅
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 font-semibold block">التاريخ</span>
+            <span class="text-xs sm:text-sm font-bold text-slate-800">22 / 11 / 2026</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0 text-lg">
+            ⏰
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 font-semibold block">الوقت</span>
+            <span class="text-xs sm:text-sm font-bold text-slate-800">09:30 صباحاً</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0 text-lg">
+            📍
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 font-semibold block">المكان</span>
+            <a href="https://maps.google.com/?q=Al-Kut+University+College" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm font-bold text-amber-600 hover:underline">
+              جامعة الكوت - حديقة المتصرف
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- العبارة الختامية -->
+      <div class="text-center pt-6 space-y-4">
+        <p class="font-quran text-xl sm:text-2xl text-amber-200/90 leading-relaxed max-w-lg mx-auto">
+          "وجودكم يكتمل به فرحي، وبحضوركم تصبح هذه اللحظة ذكرى لا تُنسى."
+        </p>
+        <div class="text-xs text-slate-400">
+          <p>أدام الله الأفراح في بيوتكم وعوائلكم الكريمة</p>
+          <p class="font-semibold text-slate-300 mt-1">أخوكم حسين عادل صبري</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- الفوتر وحقوق التصميم -->
+    <footer class="w-full text-center text-slate-500 text-[11px] pt-12 pb-6 border-t border-slate-800/80 mt-12 flex flex-col items-center gap-2">
+      <p>© جميع الحقوق محفوظة لـ <span class="font-semibold text-amber-400">roya_othar</span></p>
+      <button onclick="scrollToTop()" class="text-amber-500 hover:text-amber-400 text-xs mt-1">
+        العودة إلى البداية ↑
+      </button>
+    </footer>
+
+  </section>
+
+  <!-- مشغل الصوت الخفي -->
+  <audio id="bg-audio" src="audio.mp3" loop preload="none"></audio>
+
+  <script>
+    // الإعدادات
+    const ENABLE_AUDIO_FEATURE = false; // غيّرها إلى true إن أردت إظهار زر الصوت
+    const TARGET_DATE = new Date("2026-11-22T09:30:00+03:00").getTime();
+    const audio = document.getElementById('bg-audio');
+    const audioBtn = document.getElementById('audio-toggle-btn');
+    const audioIcon = document.getElementById('audio-icon');
+    const audioText = document.getElementById('audio-text');
+    let isPlaying = false;
+
+    if (ENABLE_AUDIO_FEATURE && audioBtn) {
+      audioBtn.classList.remove('hidden');
+    }
+
+    function toggleAudio() {
+      if (!ENABLE_AUDIO_FEATURE || !audio) return;
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        audioIcon.textContent = '🔇';
+        audioText.textContent = 'تشغيل الصوت';
+      } else {
+        audio.play().then(() => {
+          isPlaying = true;
+          audioIcon.textContent = '🔊';
+          audioText.textContent = 'الموسيقى تعمل';
+        }).catch(e => console.log('Audio error:', e));
+      }
+    }
+
+    function handleDescent() {
+      document.getElementById('invitation-section').scrollIntoView({ behavior: 'smooth' });
+      if (ENABLE_AUDIO_FEATURE && !isPlaying && audio) {
+        audio.play().then(() => {
+          isPlaying = true;
+          audioIcon.textContent = '🔊';
+          audioText.textContent = 'الموسيقى تعمل';
+        }).catch(() => {});
+      }
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleShare() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'دعوة تخرج حسين عادل صبري',
+          text: 'يسعدني دعوتكم لحضور حفل تخرجي',
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        const tempInput = document.createElement('input');
+        tempInput.value = window.location.href;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        const toast = document.getElementById('copy-toast');
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2500);
+      }
+    }
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = TARGET_DATE - now;
+
+      if (distance <= 0) {
+        document.getElementById('countdown-status').textContent = '🎉 اليوم يوم التخرج المبارك! 🎉';
+        document.getElementById('days-val').textContent = '00';
+        document.getElementById('hours-val').textContent = '00';
+        document.getElementById('minutes-val').textContent = '00';
+        document.getElementById('seconds-val').textContent = '00';
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days-val').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours-val').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes-val').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds-val').textContent = String(seconds).padStart(2, '0');
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
