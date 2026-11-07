@@ -1,407 +1,266 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>دعوة تخرج | حسين عادل صبري</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- React & Babel CDNs -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- Google Arabic Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <style>
-    body {
-      font-family: 'IBM Plex Sans Arabic', 'Alexandria', sans-serif;
-      background-color: #0f172a;
-      overflow-x: hidden;
-      margin: 0;
-      padding: 0;
-    }
-    .font-quran { font-family: 'Amiri', serif; }
-    .font-alexandria { font-family: 'Alexandria', sans-serif; }
-
-    @keyframes floatSlow {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-16px) scale(1.02); }
-    }
-    @keyframes driftRight {
-      0% { transform: translateX(-3%); }
-      100% { transform: translateX(3%); }
-    }
-    @keyframes goldenPulse {
-      0%, 100% { opacity: 0.35; filter: blur(35px); }
-      50% { opacity: 0.65; filter: blur(55px); }
-    }
-    @keyframes lightBeam {
-      0%, 100% { opacity: 0.2; transform: rotate(-15deg); }
-      50% { opacity: 0.45; transform: rotate(-12deg); }
-    }
-
-    .animate-float-slow { animation: floatSlow 12s ease-in-out infinite; }
-    .animate-drift { animation: driftRight 24s ease-in-out infinite alternate; }
-    .animate-golden-pulse { animation: goldenPulse 7s ease-in-out infinite; }
-    .animate-light-beam { animation: lightBeam 9s ease-in-out infinite; }
-    
-    .gold-border-glow {
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(212, 175, 55, 0.15);
-    }
-    .cinematic-blur {
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة تخرج | حسين عادل صبري</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- خطوط عربية -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Alexandria', 'IBM Plex Sans Arabic', sans-serif;
+            background-color: #030712;
+            color: #f8fafc;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .amiri-font { font-family: 'Amiri', serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .gold-border {
+            border: 1.5px solid rgba(212, 175, 55, 0.4);
+        }
+        .cloud-shape {
+            position: absolute;
+            background: radial-gradient(circle, rgba(224, 242, 254, 0.28) 0%, rgba(186, 230, 253, 0.12) 60%, rgba(255, 255, 255, 0) 80%);
+            border-radius: 50%;
+            filter: blur(35px);
+            pointer-events: none;
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.04); }
+        }
+        .animate-float-slow {
+            animation: floatSlow 8s ease-in-out infinite;
+        }
+    </style>
 </head>
-<body>
-  <div id="root"></div>
+<body class="selection:bg-amber-500/30">
 
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+    <!-- أزرار التحكم العلوية -->
+    <div class="fixed top-6 left-6 z-50 flex items-center gap-3">
+        <button id="audio-toggle-btn" onclick="toggleAudio()" class="hidden glass-panel gold-border p-3 rounded-full hover:bg-white/10 transition-all duration-300 text-amber-300 shadow-lg">
+            <span id="audio-icon">🔊</span>
+        </button>
+        <button onclick="shareInvite()" class="glass-panel gold-border px-4 py-2.5 rounded-full hover:bg-white/10 transition-all duration-300 text-xs font-semibold text-amber-200 flex items-center gap-2 shadow-lg">
+            <span>مشاركة</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+        </button>
+    </div>
 
-    // =========================================================================
-    // إعدادات الميزات:
-    // لتفعيل الصوت: اجعلها true
-    // لإلغاء الصوت وإخفاء الزر تماماً: اجعلها false
-    // =========================================================================
-    const ENABLE_AUDIO_FEATURE = false;
+    <!-- 1. المشهد الافتتاحي السماوي -->
+    <section id="hero-scene" class="relative min-h-screen w-full flex flex-col items-center justify-center p-6 text-center overflow-hidden bg-gradient-to-b from-sky-950 via-slate-900 to-gray-950">
+        <div class="cloud-shape w-96 h-96 top-10 left-10 animate-float-slow"></div>
+        <div class="cloud-shape w-[32rem] h-[32rem] bottom-10 right-10 animate-float-slow" style="animation-delay: -3s;"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none"></div>
 
-    // الصورة الشخصية المباشرة (Base64)
-    const GRADUATE_IMAGE = "data:image/jpeg;base64,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";
-
-    function App() {
-      const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-      const [openingTextRevealed, setOpeningTextRevealed] = useState(false);
-      const [copied, setCopied] = useState(false);
-      const audioRef = useRef(null);
-      const invitationRef = useRef(null);
-
-      const eventData = {
-        graduateName: 'حسين عادل صبري',
-        degree: 'هندسة تقنيات الأجهزة الطبية',
-        university: 'جامعة الكوت',
-        targetDate: '2026-11-22T09:30:00+03:00',
-        displayDate: 'الأحد، 22 نوفمبر 2026',
-        time: 'الساعة 09:30 صباحاً',
-        location: 'جامعة الكوت - حديقة المتصرف',
-        imageSrc: GRADUATE_IMAGE,
-        mapsUrl: 'https://maps.google.com/?q=Al-Kut+University+College',
-      };
-
-      const prayerLine1 = "الحمد لله الذي هيّأ البدء، وبشّر باليسر، وطيّب المنتهى،";
-      const prayerLine2 = "الحمد لله الذي أغدقني سروراً، وجعل طريقي يسيراً.";
-
-      useEffect(() => {
-        const timer = setTimeout(() => setOpeningTextRevealed(true), 800);
-        return () => clearTimeout(timer);
-      }, []);
-
-      const toggleSound = () => {
-        if (!ENABLE_AUDIO_FEATURE || !audioRef.current) return;
-        if (isPlayingAudio) {
-          audioRef.current.pause();
-          setIsPlayingAudio(false);
-        } else {
-          audioRef.current.play()
-            .then(() => setIsPlayingAudio(true))
-            .catch(err => console.log(err));
-        }
-      };
-
-      const handleDescent = () => {
-        if (ENABLE_AUDIO_FEATURE && audioRef.current && !isPlayingAudio) {
-          audioRef.current.play().then(() => setIsPlayingAudio(true)).catch(() => {});
-        }
-        invitationRef.current?.scrollIntoView({ behavior: 'smooth' });
-      };
-
-      // Countdown
-      const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, isGraduationDay: false });
-
-      useEffect(() => {
-        const calculate = () => {
-          const diff = new Date(eventData.targetDate).getTime() - new Date().getTime();
-          if (diff <= 0) {
-            setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isGraduationDay: true });
-          } else {
-            setTimeLeft({
-              days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-              hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-              minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-              seconds: Math.floor((diff % (1000 * 60)) / 1000),
-              isGraduationDay: false
-            });
-          }
-        };
-        calculate();
-        const interval = setInterval(calculate, 1000);
-        return () => clearInterval(interval);
-      }, []);
-
-      const handleShare = async () => {
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: `دعوة تخرج ${eventData.graduateName}`,
-              url: window.location.href,
-            });
-          } catch(e) {}
-        } else {
-          navigator.clipboard.writeText(window.location.href);
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2500);
-        }
-      };
-
-      return (
-        <div className="relative min-h-screen text-slate-800 bg-[#0f172a]">
-          {/* الصوت المرفوع audio.mp3 - يعمل فقط إذا كانت الميزة مفعلة */}
-          {ENABLE_AUDIO_FEATURE && (
-            <audio ref={audioRef} src="audio.mp3" loop preload="auto" />
-          )}
-
-          {/* الشريط العلوي */}
-          <header className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between pointer-events-none">
-            {ENABLE_AUDIO_FEATURE ? (
-              <button
-                onClick={toggleSound}
-                className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-slate-800 shadow-lg backdrop-blur border border-white/60 transition-all active:scale-95 text-xs font-semibold"
-              >
-                <i data-lucide={isPlayingAudio ? "volume-2" : "volume-x"} className="w-4 h-4 text-amber-600"></i>
-                <span>{isPlayingAudio ? "الموسيقى تعمل" : "تشغيل الصوت"}</span>
-              </button>
-            ) : (
-              <div></div>
-            )}
-
-            <button
-              onClick={handleShare}
-              className="pointer-events-auto flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold shadow-lg transition-all active:scale-95"
-            >
-              <i data-lucide="share-2" className="w-3.5 h-3.5"></i>
-              <span>مشاركة</span>
-            </button>
-          </header>
-
-          {copied && (
-            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full bg-slate-900 text-amber-300 border border-amber-500/40 shadow-xl text-xs font-medium animate-bounce">
-              تم نسخ رابط الدعوة بنجاح!
-            </div>
-          )}
-
-          {/* القسم 1: المشهد السماوي الافتتاحي */}
-          <section className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#b8ddf8] via-[#e2f0fb] to-[#f4f9fd] px-6 py-16 select-none">
-            
-            {/* إضاءات وغيوم */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[600px] h-[450px] bg-amber-300/35 rounded-full animate-golden-pulse"></div>
-              <div className="absolute top-[5%] left-[-10%] w-[600px] h-[300px] bg-white/50 rounded-full blur-[70px] animate-drift"></div>
-              <div className="absolute bottom-0 right-[-10%] w-[700px] h-[400px] bg-white/70 rounded-full blur-[60px] animate-float-slow"></div>
+        <div class="relative z-10 max-w-3xl mx-auto space-y-8">
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-panel gold-border text-amber-300/90 text-sm font-light">
+                <span>✨</span>
+                <span>بسم الله نبدأ وبه نستعين</span>
+                <span>✨</span>
             </div>
 
-            {/* البسملة */}
-            <div className="relative z-10 pt-4 flex flex-col items-center">
-              <div className="w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center border border-amber-300">
-                <i data-lucide="sparkles" className="w-5 h-5 text-amber-600"></i>
-              </div>
-              <span className="text-[11px] tracking-widest text-slate-500 mt-2">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
+            <h1 class="amiri-font text-2xl md:text-4xl lg:text-5xl font-bold leading-relaxed text-slate-100 drop-shadow-md">
+                "الحمد لله الذي هيّأ البدء، وبشّر باليسر، وطيّب المنتهى، الحمد لله الذي أغدقني سروراً، وجعل طريقي يسيراً."
+            </h1>
+
+            <div class="pt-8">
+                <button onclick="scrollToInvitation()" class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-amber-500/20 via-amber-400/20 to-amber-500/20 glass-panel gold-border hover:border-amber-400 hover:scale-105 transition-all duration-300 shadow-xl">
+                    <span class="text-amber-200 font-medium text-base">مشاهدة بطاقة الدعوة</span>
+                    <svg class="w-5 h-5 text-amber-300 transform group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </button>
             </div>
-
-            {/* النص القرآني / الدعاء */}
-            <div className="relative z-10 max-w-3xl mx-auto text-center px-4 my-auto space-y-6">
-              <p className={`font-quran text-2xl sm:text-4xl md:text-5xl text-slate-800 leading-relaxed transition-all duration-1000 ${
-                openingTextRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
-                {prayerLine1}
-              </p>
-              <p className={`font-quran text-2xl sm:text-4xl md:text-5xl text-amber-900 leading-relaxed transition-all duration-1000 delay-300 ${
-                openingTextRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
-                {prayerLine2}
-              </p>
-            </div>
-
-            {/* زر الانتقال */}
-            <div className="relative z-10 pb-6 text-center">
-              <button
-                onClick={handleDescent}
-                className="inline-flex flex-col items-center gap-2 px-8 py-3.5 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-xl border border-amber-300/80 transition-all hover:scale-105 active:scale-95"
-              >
-                <span className="text-sm font-bold flex items-center gap-2">
-                  <i data-lucide="sparkles" className="w-4 h-4 text-amber-600"></i>
-                  مشاهدة بطاقة الدعوة
-                </span>
-                <i data-lucide="chevron-down" className="w-4 h-4 text-amber-600 animate-bounce"></i>
-              </button>
-            </div>
-          </section>
-
-          {/* القسم 2: البطاقة والتفاصيل والعد التنازلي */}
-          <section ref={invitationRef} className="relative w-full min-h-screen py-16 px-4 sm:px-6 bg-gradient-to-b from-[#f4f9fd] via-[#eef6fc] to-[#0f172a] flex flex-col items-center">
-            
-            <div className="relative z-10 max-w-2xl w-full mx-auto space-y-10">
-              
-              {/* بطاقة الدعوة */}
-              <div className="relative bg-white/95 cinematic-blur rounded-3xl p-6 sm:p-10 shadow-2xl border border-amber-200 gold-border-glow text-center">
-                
-                {/* شارة الترحيب */}
-                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold mb-4">
-                  <i data-lucide="sparkles" className="w-3.5 h-3.5 text-amber-600"></i>
-                  بكل حب وامتنان
-                  <i data-lucide="sparkles" className="w-3.5 h-3.5 text-amber-600"></i>
-                </div>
-
-                <h2 className="text-base sm:text-lg text-slate-700 max-w-lg mx-auto mb-6">
-                  يسعدني ويشرفني حضوركم لتشاركوني فرحة التخرج بعد سنوات من الجهد والتعب
-                </h2>
-
-                {/* صورة الخريج */}
-                <div className="my-6 flex flex-col items-center">
-                  <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full p-1.5 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-xl">
-                    <img 
-                      src={eventData.imageSrc} 
-                      alt={eventData.graduateName}
-                      className="w-full h-full rounded-full object-cover object-top border-2 border-white"
-                    />
-                  </div>
-
-                  <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-5 font-alexandria">
-                    {eventData.graduateName}
-                  </h1>
-                  <p className="text-base sm:text-lg font-semibold text-amber-700 mt-1">
-                    {eventData.degree}
-                  </p>
-                  <p className="text-sm text-slate-500">
-                    {eventData.university}
-                  </p>
-                </div>
-
-                {/* تاريخ الحفل */}
-                <div className="mt-6 pt-4 border-t border-amber-100">
-                  <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider block mb-1">موعدنا معكم</span>
-                  <div className="inline-block px-6 py-2 rounded-xl bg-amber-50 border border-amber-200 text-slate-800 font-bold text-base">
-                    {eventData.displayDate}
-                  </div>
-                </div>
-              </div>
-
-              {/* العد التنازلي: يبدأ من اليسار (أيام -> ساعات -> دقائق -> ثوانٍ) */}
-              <div className="space-y-4">
-                <div className="text-center">
-                  <span className="text-xs uppercase font-bold tracking-widest text-amber-400">العد التنازلي للحفل</span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
-                    {timeLeft.isGraduationDay ? "اليوم يوم التخرج!" : "ننتظركم بكل محبة"}
-                  </h3>
-                </div>
-
-                {timeLeft.isGraduationDay ? (
-                  <div className="p-6 rounded-2xl bg-amber-500/20 border border-amber-400/50 text-center text-amber-300 font-bold text-2xl">
-                    🎉 اليوم يوم التخرج المبارك! 🎉
-                  </div>
-                ) : (
-                  <div dir="ltr" className="grid grid-cols-4 gap-2.5 sm:gap-4">
-                    {[
-                      { label: 'أيام', val: timeLeft.days },
-                      { label: 'ساعات', val: timeLeft.hours },
-                      { label: 'دقائق', val: timeLeft.minutes },
-                      { label: 'ثوانٍ', val: timeLeft.seconds },
-                    ].map((item, idx) => (
-                      <div key={idx} className="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-5 border border-white/20 text-center">
-                        <div className="text-2xl sm:text-4xl font-extrabold text-white font-mono">
-                          {String(item.val).padStart(2, '0')}
-                        </div>
-                        <div className="text-[11px] sm:text-xs font-semibold text-slate-300 mt-1">
-                          {item.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* تفاصيل الحفل */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
-                    <i data-lucide="calendar" className="w-5 h-5"></i>
-                  </div>
-                  <div>
-                    <span className="text-xs text-slate-400 font-semibold block">التاريخ</span>
-                    <span className="text-xs sm:text-sm font-bold text-slate-800">22 / 11 / 2026</span>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
-                    <i data-lucide="clock" className="w-5 h-5"></i>
-                  </div>
-                  <div>
-                    <span className="text-xs text-slate-400 font-semibold block">الوقت</span>
-                    <span className="text-xs sm:text-sm font-bold text-slate-800">09:30 صباحاً</span>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
-                    <i data-lucide="map-pin" className="w-5 h-5"></i>
-                  </div>
-                  <div>
-                    <span className="text-xs text-slate-400 font-semibold block">المكان</span>
-                    <a href={eventData.mapsUrl} target="_blank" rel="noopener noreferrer" className="text-xs sm:text-sm font-bold text-amber-600 hover:underline">
-                      جامعة الكوت
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* العبارة الختامية */}
-              <div className="text-center pt-6 space-y-4">
-                <p className="font-quran text-xl sm:text-2xl text-amber-200/90 leading-relaxed max-w-lg mx-auto">
-                  "وجودكم يكتمل به فرحي، وبحضوركم تصبح هذه اللحظة ذكرى لا تُنسى."
-                </p>
-                <div className="text-xs text-slate-400">
-                  <p>أدام الله الأفراح في بيوتكم وعوائلكم الكريمة</p>
-                  <p className="font-semibold text-slate-300 mt-1">أخوكم حسين عادل صبري</p>
-                </div>
-              </div>
-
-            </div>
-
-            {/* الفوتر وحقوق التصميم */}
-            <footer className="w-full text-center text-slate-500 text-[11px] pt-12 pb-6 border-t border-slate-800/80 mt-12 flex flex-col items-center gap-2">
-              <p>© جميع الحقوق محفوظة لـ <span className="font-semibold text-amber-400">roya_othar</span></p>
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="text-amber-500 hover:text-amber-400 text-xs mt-1"
-              >
-                العودة إلى البداية ↑
-              </button>
-            </footer>
-
-          </section>
         </div>
-      );
-    }
+    </section>
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    <!-- 2. بطاقة الدعوة الرئيسية -->
+    <section id="invitation-card" class="relative min-h-screen py-20 px-4 md:px-8 flex flex-col items-center justify-center bg-gradient-to-b from-gray-950 via-slate-900 to-sky-950">
+        
+        <div class="max-w-xl w-full rounded-3xl p-8 md:p-12 text-center relative overflow-hidden shadow-2xl bg-gradient-to-b from-white via-slate-50 to-amber-50/20 text-slate-800 border-4 border-amber-300/60">
+            
+            <div class="space-y-4 mb-8">
+                <span class="text-amber-700/80 font-medium text-sm tracking-wider flex items-center justify-center gap-2">
+                    <span>✨</span> بكل حب وامتنان <span>✨</span>
+                </span>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+                    يسعدني ويشرفني حضوركم لتشاركوني فرحة التخرج بعد سنوات من الجهد والتعب
+                </p>
+            </div>
 
-    // تفعيل الأيقونات تلقائياً
-    window.addEventListener('load', () => {
-      if (window.lucide) window.lucide.createIcons();
-    });
-    setInterval(() => {
-      if (window.lucide) window.lucide.createIcons();
-    }, 1000);
-  </script>
+            <!-- إطار الصورة الشخصية -->
+            <div class="relative w-44 h-44 md:w-52 md:h-52 mx-auto my-6">
+                <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-500 animate-spin-slow p-1 shadow-xl"></div>
+                <div class="relative w-full h-full rounded-full overflow-hidden border-4 border-white bg-slate-100 shadow-inner">
+                    <img id="graduate-photo" src="graduate.jpg" alt="صورة الخريج" class="w-full h-full object-cover object-top" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80';">
+                </div>
+            </div>
+
+            <!-- معلومات الخريج -->
+            <div class="space-y-2 mt-4">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">حسين عادل صبري</h2>
+                <p class="text-amber-800 font-semibold text-sm md:text-base">هندسة تقنيات الأجهزة الطبية</p>
+                <p class="text-slate-500 text-xs md:text-sm">جامعة الكوت</p>
+            </div>
+
+            <div class="my-6 py-2 px-6 rounded-xl bg-amber-50 border border-amber-200/60 inline-block text-xs font-semibold text-amber-900">
+                الأحد، 22 نوفمبر 2026
+            </div>
+        </div>
+
+        <!-- 3. العد التنازلي -->
+        <div class="max-w-xl w-full mt-12 text-center">
+            <p class="text-xs text-amber-300/70 mb-2 uppercase tracking-widest">العد التنازلي للحفل</p>
+            <h3 class="text-lg font-semibold text-amber-100 mb-6">ننتظركم بكل محبة</h3>
+            
+            <div class="grid grid-cols-4 gap-3 md:gap-4" dir="ltr">
+                <div class="glass-panel gold-border p-3 md:p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                    <span id="days" class="text-2xl md:text-4xl font-extrabold text-amber-300">00</span>
+                    <span class="text-[11px] md:text-xs text-slate-300 mt-1 font-medium">أيام</span>
+                </div>
+                <div class="glass-panel gold-border p-3 md:p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                    <span id="hours" class="text-2xl md:text-4xl font-extrabold text-amber-300">00</span>
+                    <span class="text-[11px] md:text-xs text-slate-300 mt-1 font-medium">ساعات</span>
+                </div>
+                <div class="glass-panel gold-border p-3 md:p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                    <span id="minutes" class="text-2xl md:text-4xl font-extrabold text-amber-300">00</span>
+                    <span class="text-[11px] md:text-xs text-slate-300 mt-1 font-medium">دقائق</span>
+                </div>
+                <div class="glass-panel gold-border p-3 md:p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                    <span id="seconds" class="text-2xl md:text-4xl font-extrabold text-amber-300">00</span>
+                    <span class="text-[11px] md:text-xs text-slate-300 mt-1 font-medium">ثوانٍ</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. تفاصيل الحفل والمكان -->
+        <div class="max-w-xl w-full mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="glass-panel gold-border p-4 rounded-2xl text-center">
+                <span class="text-amber-300 text-lg">📅</span>
+                <p class="text-xs text-slate-400 mt-1">التاريخ</p>
+                <p class="text-sm font-semibold text-slate-100">الأحد 22 / 11 / 2026</p>
+            </div>
+            <div class="glass-panel gold-border p-4 rounded-2xl text-center">
+                <span class="text-amber-300 text-lg">⏰</span>
+                <p class="text-xs text-slate-400 mt-1">الوقت</p>
+                <p class="text-sm font-semibold text-slate-100">09:30 صباحاً</p>
+            </div>
+            <div class="glass-panel gold-border p-4 rounded-2xl text-center">
+                <span class="text-amber-300 text-lg">📍</span>
+                <p class="text-xs text-slate-400 mt-1">المكان</p>
+                <p class="text-sm font-semibold text-slate-100">جامعة الكوت - حديقة المتصرف</p>
+            </div>
+        </div>
+
+        <!-- عبارة ختامية وزر الصعود -->
+        <div class="mt-14 text-center space-y-6">
+            <p class="amiri-font text-base md:text-lg text-amber-200/90 italic max-w-md mx-auto">
+                "وجودكم يكتمل به فرحي، وبحضوركم تصبح هذه اللحظة ذكرى لا تُنسى."
+            </p>
+            <p class="text-xs text-slate-400">أخوكم / حسين عادل صبري</p>
+
+            <button onclick="scrollToTop()" class="px-6 py-2.5 rounded-full glass-panel gold-border text-xs text-amber-300 hover:bg-white/10 transition-all duration-300 inline-flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                <span>العودة إلى البداية</span>
+            </button>
+        </div>
+
+        <!-- الحقوق -->
+        <footer class="mt-16 text-center text-[11px] text-slate-500">
+            جميع الحقوق محفوظة لـ <span class="text-amber-400 font-medium">roya_othar</span>
+        </footer>
+    </section>
+
+    <audio id="bg-audio" loop preload="none">
+        <source src="audio.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        const ENABLE_AUDIO_FEATURE = false; // فعّلها إلى true إن أردت إظهار زر الصوت
+        const TARGET_DATE = new Date("2026-11-22T09:30:00+03:00").getTime();
+        const audio = document.getElementById('bg-audio');
+        const audioBtn = document.getElementById('audio-toggle-btn');
+        const audioIcon = document.getElementById('audio-icon');
+        let isPlaying = false;
+
+        if (ENABLE_AUDIO_FEATURE) {
+            audioBtn.classList.remove('hidden');
+        }
+
+        function scrollToInvitation() {
+            document.getElementById('invitation-card').scrollIntoView({ behavior: 'smooth' });
+            if (ENABLE_AUDIO_FEATURE && !isPlaying) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    audioIcon.textContent = '🔊';
+                }).catch(() => {});
+            }
+        }
+
+        function scrollToTop() {
+            document.getElementById('hero-scene').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleAudio() {
+            if (!ENABLE_AUDIO_FEATURE) return;
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                audioIcon.textContent = '🔇';
+            } else {
+                audio.play();
+                isPlaying = true;
+                audioIcon.textContent = '🔊';
+            }
+        }
+
+        function shareInvite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'دعوة تخرج حسين عادل صبري',
+                    text: 'يسعدني دعوتكم لحضور حفل تخرجي',
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('تم نسخ رابط الدعوة بنجاح!');
+            }
+        }
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = TARGET_DATE - now;
+
+            if (distance < 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
 </body>
 </html>
