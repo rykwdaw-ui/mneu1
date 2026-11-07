@@ -69,6 +69,16 @@
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
+    // =========================================================================
+    // إعدادات الميزات:
+    // لتفعيل الصوت: اجعلها true
+    // لإلغاء الصوت وإخفاء الزر تماماً: اجعلها false
+    // =========================================================================
+    const ENABLE_AUDIO_FEATURE = false;
+
+    // الصورة الشخصية المباشرة (Base64)
+    const GRADUATE_IMAGE = "data:image/jpeg;base64,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";
+
     function App() {
       const [isPlayingAudio, setIsPlayingAudio] = useState(false);
       const [openingTextRevealed, setOpeningTextRevealed] = useState(false);
@@ -84,7 +94,7 @@
         displayDate: 'الأحد، 22 نوفمبر 2026',
         time: 'الساعة 09:30 صباحاً',
         location: 'جامعة الكوت - حديقة المتصرف',
-        imageSrc: 'graduate.jpg',
+        imageSrc: GRADUATE_IMAGE,
         mapsUrl: 'https://maps.google.com/?q=Al-Kut+University+College',
       };
 
@@ -97,7 +107,7 @@
       }, []);
 
       const toggleSound = () => {
-        if (!audioRef.current) return;
+        if (!ENABLE_AUDIO_FEATURE || !audioRef.current) return;
         if (isPlayingAudio) {
           audioRef.current.pause();
           setIsPlayingAudio(false);
@@ -109,7 +119,7 @@
       };
 
       const handleDescent = () => {
-        if (audioRef.current && !isPlayingAudio) {
+        if (ENABLE_AUDIO_FEATURE && audioRef.current && !isPlayingAudio) {
           audioRef.current.play().then(() => setIsPlayingAudio(true)).catch(() => {});
         }
         invitationRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -155,18 +165,24 @@
 
       return (
         <div className="relative min-h-screen text-slate-800 bg-[#0f172a]">
-          {/* الصوت المرفوع audio.mp3 */}
-          <audio ref={audioRef} src="audio.mp3" loop preload="auto" />
+          {/* الصوت المرفوع audio.mp3 - يعمل فقط إذا كانت الميزة مفعلة */}
+          {ENABLE_AUDIO_FEATURE && (
+            <audio ref={audioRef} src="audio.mp3" loop preload="auto" />
+          )}
 
           {/* الشريط العلوي */}
           <header className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between pointer-events-none">
-            <button
-              onClick={toggleSound}
-              className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-slate-800 shadow-lg backdrop-blur border border-white/60 transition-all active:scale-95 text-xs font-semibold"
-            >
-              <i data-lucide={isPlayingAudio ? "volume-2" : "volume-x"} className="w-4 h-4 text-amber-600"></i>
-              <span>{isPlayingAudio ? "الموسيقى تعمل" : "تشغيل الصوت"}</span>
-            </button>
+            {ENABLE_AUDIO_FEATURE ? (
+              <button
+                onClick={toggleSound}
+                className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-slate-800 shadow-lg backdrop-blur border border-white/60 transition-all active:scale-95 text-xs font-semibold"
+              >
+                <i data-lucide={isPlayingAudio ? "volume-2" : "volume-x"} className="w-4 h-4 text-amber-600"></i>
+                <span>{isPlayingAudio ? "الموسيقى تعمل" : "تشغيل الصوت"}</span>
+              </button>
+            ) : (
+              <div></div>
+            )}
 
             <button
               onClick={handleShare}
@@ -256,10 +272,6 @@
                       src={eventData.imageSrc} 
                       alt={eventData.graduateName}
                       className="w-full h-full rounded-full object-cover object-top border-2 border-white"
-                      onError={(e) => {
-                        // صورة احتياطية إذا لم يتم رفع graduate.jpg بعد
-                        e.target.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80";
-                      }}
                     />
                   </div>
 
