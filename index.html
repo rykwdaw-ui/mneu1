@@ -259,11 +259,11 @@
   </section>
 
   <!-- مشغل الصوت الخفي -->
-  <audio id="bg-audio" src="audio.mp3" loop preload="none"></audio>
+  <audio id="bg-audio" src="https://github.com/user-attachments/files/34528319/audio.mp3" loop preload="auto"></audio>
 
   <script>
     // الإعدادات
-    const ENABLE_AUDIO_FEATURE = false; // غيّرها إلى true إن أردت إظهار زر الصوت
+    const ENABLE_AUDIO_FEATURE = true; // تم تفعيل الصوت وزر التحكم
     const TARGET_DATE = new Date("2026-11-22T09:30:00+03:00").getTime();
     const audio = document.getElementById('bg-audio');
     const audioBtn = document.getElementById('audio-toggle-btn');
@@ -276,7 +276,7 @@
     }
 
     function toggleAudio() {
-      if (!ENABLE_AUDIO_FEATURE || !audio) return;
+      if (!audio) return;
       if (isPlaying) {
         audio.pause();
         isPlaying = false;
@@ -293,7 +293,7 @@
 
     function handleDescent() {
       document.getElementById('invitation-section').scrollIntoView({ behavior: 'smooth' });
-      if (ENABLE_AUDIO_FEATURE && !isPlaying && audio) {
+      if (!isPlaying && audio) {
         audio.play().then(() => {
           isPlaying = true;
           audioIcon.textContent = '🔊';
