@@ -1,670 +1,395 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Calendar, Clock, MapPin, Volume2, VolumeX, Sparkles, 
-  Share2, Award, Heart, Check, ChevronDown, ExternalLink
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>دعوة تخرج | حسين عادل صبري</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React & Babel CDNs -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-export default function App() {
-  // State variables
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-  const [currentScene, setCurrentScene] = useState<'opening' | 'transitioning' | 'invitation'>('opening');
-  const [openingTextRevealed, setOpeningTextRevealed] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [copiedNotification, setCopiedNotification] = useState(false);
+  <!-- Google Arabic Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  // Audio Reference (يشير إلى ملف الصوت الخاص بك في مجلد المشروع)
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  // Event Details
-  const eventData = {
-    graduateName: 'حسين عادل صبري',
-    degree: 'هندسة تقنيات الأجهزة الطبية',
-    university: 'جامعة الكوت',
-    targetDate: '2026-11-22T09:30:00+03:00', // Asia/Baghdad timezone 9:30 AM
-    displayDate: 'الأحد، 22 نوفمبر 2026',
-    time: 'الساعة 09:30 صباحاً',
-    location: 'جامعة الكوت - حديقة المتصرف',
-    mapsUrl: 'https://maps.google.com/?q=Al-Kut+University+College',
-  };
-
-  const invitationRef = useRef<HTMLDivElement>(null);
-
-  // Opening Prayer quote words for phased elegant cinematic reveal
-  const prayerLine1 = "الحمد لله الذي هيّأ البدء، وبشّر باليسر، وطيّب المنتهى،";
-  const prayerLine2 = "الحمد لله الذي أغدقني سروراً، وجعل طريقي يسيراً.";
-
-  // Parallax on mouse move
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 20;
-      const y = (e.clientY / innerHeight - 0.5) * 20;
-      setMousePos({ x, y });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  // Scene transition sequence
-  useEffect(() => {
-    const textTimer = setTimeout(() => {
-      setOpeningTextRevealed(true);
-    }, 1200);
-
-    return () => clearTimeout(textTimer);
-  }, []);
-
-  // التحكم بالصوت
-  const toggleSound = () => {
-    if (!audioRef.current) return;
-    if (isPlayingAudio) {
-      audioRef.current.pause();
-      setIsPlayingAudio(false);
-    } else {
-      audioRef.current.play().then(() => {
-        setIsPlayingAudio(true);
-      }).catch(err => {
-        console.log("Audio play error:", err);
-      });
+  <style>
+    body {
+      font-family: 'IBM Plex Sans Arabic', 'Alexandria', sans-serif;
+      background-color: #0f172a;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
     }
-  };
+    .font-quran { font-family: 'Amiri', serif; }
+    .font-alexandria { font-family: 'Alexandria', sans-serif; }
 
-  // عند الضغط على الانتقال للبطاقة
-  const handleBeginDescent = () => {
-    if (audioRef.current && !isPlayingAudio) {
-      audioRef.current.play().then(() => {
-        setIsPlayingAudio(true);
-      }).catch(err => console.log(err));
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-16px) scale(1.02); }
     }
-    setCurrentScene('transitioning');
+    @keyframes driftRight {
+      0% { transform: translateX(-3%); }
+      100% { transform: translateX(3%); }
+    }
+    @keyframes goldenPulse {
+      0%, 100% { opacity: 0.35; filter: blur(35px); }
+      50% { opacity: 0.65; filter: blur(55px); }
+    }
+    @keyframes lightBeam {
+      0%, 100% { opacity: 0.2; transform: rotate(-15deg); }
+      50% { opacity: 0.45; transform: rotate(-12deg); }
+    }
+
+    .animate-float-slow { animation: floatSlow 12s ease-in-out infinite; }
+    .animate-drift { animation: driftRight 24s ease-in-out infinite alternate; }
+    .animate-golden-pulse { animation: goldenPulse 7s ease-in-out infinite; }
+    .animate-light-beam { animation: lightBeam 9s ease-in-out infinite; }
     
-    setTimeout(() => {
-      setCurrentScene('invitation');
-      invitationRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 900);
-  };
-
-  // Live Countdown Hook
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    isGraduationDay: false,
-  });
-
-  useEffect(() => {
-    const calculateCountdown = () => {
-      const eventTime = new Date(eventData.targetDate).getTime();
-      const now = new Date().getTime();
-      const difference = eventTime - now;
-
-      if (difference <= 0) {
-        setTimeLeft({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-          isGraduationDay: true,
-        });
-      } else {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        setTimeLeft({
-          days,
-          hours,
-          minutes,
-          seconds,
-          isGraduationDay: false,
-        });
-      }
-    };
-
-    calculateCountdown();
-    const interval = setInterval(calculateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, [eventData.targetDate]);
-
-  // Share functionality
-  const handleShare = async () => {
-    const shareData = {
-      title: `دعوة تخرج ${eventData.graduateName}`,
-      text: `يسرني دعوتكم لمشاركتي فرحة تخرجي - ${eventData.graduateName} | ${eventData.degree}`,
-      url: window.location.href,
-    };
-
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        console.log('Error sharing:', err);
-      }
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      setCopiedNotification(true);
-      setTimeout(() => setCopiedNotification(false), 3000);
+    .gold-border-glow {
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(212, 175, 55, 0.15);
     }
-  };
+    .cinematic-blur {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
 
-  return (
-    <div 
-      dir="rtl" 
-      className="relative min-h-screen font-sans text-slate-800 bg-[#0f172a] selection:bg-amber-200 selection:text-amber-900 overflow-x-hidden"
-      style={{
-        fontFamily: "'IBM Plex Sans Arabic', 'Alexandria', 'Cairo', system-ui, sans-serif"
-      }}
-    >
-      {/* عنصر الصوت الفعلي من جهازك/الملف */}
-      <audio 
-        ref={audioRef} 
-        src={eventData.audioSrc} 
-        loop 
-        preload="auto"
-        onEnded={() => setIsPlayingAudio(false)}
-      />
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
 
-      {/* Google Web Fonts injection for Premium Arabic Typography */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
-        
-        .font-quran {
-          font-family: 'Amiri', serif;
-        }
-        .font-alexandria {
-          font-family: 'Alexandria', sans-serif;
-        }
+    function App() {
+      const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+      const [openingTextRevealed, setOpeningTextRevealed] = useState(false);
+      const [copied, setCopied] = useState(false);
+      const audioRef = useRef(null);
+      const invitationRef = useRef(null);
 
-        /* Volumetric Cloud & Atmospheric Keyframes */
-        @keyframes floatSlow {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-18px) scale(1.03); }
-        }
-        @keyframes driftRight {
-          0% { transform: translateX(-4%); }
-          100% { transform: translateX(4%); }
-        }
-        @keyframes goldenPulse {
-          0%, 100% { opacity: 0.35; filter: blur(35px); }
-          50% { opacity: 0.65; filter: blur(55px); }
-        }
-        @keyframes lightBeam {
-          0%, 100% { opacity: 0.2; transform: rotate(-15deg) scaleY(1); }
-          50% { opacity: 0.45; transform: rotate(-12deg) scaleY(1.15); }
-        }
-        @keyframes shimmerGold {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
+      const eventData = {
+        graduateName: 'حسين عادل صبري',
+        degree: 'هندسة تقنيات الأجهزة الطبية',
+        university: 'جامعة الكوت',
+        targetDate: '2026-11-22T09:30:00+03:00',
+        displayDate: 'الأحد، 22 نوفمبر 2026',
+        time: 'الساعة 09:30 صباحاً',
+        location: 'جامعة الكوت - حديقة المتصرف',
+        imageSrc: 'graduate.jpg',
+        mapsUrl: 'https://maps.google.com/?q=Al-Kut+University+College',
+      };
 
-        .animate-float-slow {
-          animation: floatSlow 12s ease-in-out infinite;
-        }
-        .animate-drift {
-          animation: driftRight 24s ease-in-out infinite alternate;
-        }
-        .animate-golden-pulse {
-          animation: goldenPulse 7s ease-in-out infinite;
-        }
-        .animate-light-beam {
-          animation: lightBeam 9s ease-in-out infinite;
-        }
-        .gold-shimmer-text {
-          background: linear-gradient(120deg, #996515 0%, #d4af37 25%, #f9f295 50%, #d4af37 75%, #996515 100%);
-          background-size: 200% auto;
-          color: transparent;
-          -webkit-background-clip: text;
-          background-clip: text;
-          animation: shimmerGold 6s linear infinite;
-        }
-        .gold-border-glow {
-          box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(212, 175, 55, 0.15);
-        }
-        .cinematic-blur-backdrop {
-          backdrop-filter: blur(18px);
-          -webkit-backdrop-filter: blur(18px);
-        }
-      `}} />
+      const prayerLine1 = "الحمد لله الذي هيّأ البدء، وبشّر باليسر، وطيّب المنتهى،";
+      const prayerLine2 = "الحمد لله الذي أغدقني سروراً، وجعل طريقي يسيراً.";
 
-      {/* Floating Audio & Share Control Bar */}
-      <header className="fixed top-5 left-5 right-5 z-50 flex items-center justify-between pointer-events-none">
-        {/* Audio Toggle Pill */}
-        <button
-          onClick={toggleSound}
-          className="pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-white/70 hover:bg-white/90 text-slate-800 shadow-xl backdrop-blur-md border border-white/60 transition-all duration-300 hover:scale-105 active:scale-95 group"
-          title={isPlayingAudio ? "كتم الصوت" : "تشغيل الموسيقى"}
-        >
-          {isPlayingAudio ? (
-            <>
-              <Volume2 className="w-4 h-4 text-amber-600 animate-pulse" />
-              <span className="text-xs font-semibold text-slate-700 tracking-wide">الموسيقى تعمل</span>
-              <span className="flex gap-0.5 items-end h-3">
-                <span className="w-1 bg-amber-500 rounded-full animate-bounce h-2"></span>
-                <span className="w-1 bg-amber-600 rounded-full animate-bounce h-3" style={{ animationDelay: '0.15s' }}></span>
-                <span className="w-1 bg-amber-400 rounded-full animate-bounce h-1.5" style={{ animationDelay: '0.3s' }}></span>
-              </span>
-            </>
-          ) : (
-            <>
-              <VolumeX className="w-4 h-4 text-slate-500 group-hover:text-amber-600 transition-colors" />
-              <span className="text-xs font-medium text-slate-600">تشغيل الصوت</span>
-            </>
+      useEffect(() => {
+        const timer = setTimeout(() => setOpeningTextRevealed(true), 800);
+        return () => clearTimeout(timer);
+      }, []);
+
+      const toggleSound = () => {
+        if (!audioRef.current) return;
+        if (isPlayingAudio) {
+          audioRef.current.pause();
+          setIsPlayingAudio(false);
+        } else {
+          audioRef.current.play()
+            .then(() => setIsPlayingAudio(true))
+            .catch(err => console.log(err));
+        }
+      };
+
+      const handleDescent = () => {
+        if (audioRef.current && !isPlayingAudio) {
+          audioRef.current.play().then(() => setIsPlayingAudio(true)).catch(() => {});
+        }
+        invitationRef.current?.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      // Countdown
+      const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, isGraduationDay: false });
+
+      useEffect(() => {
+        const calculate = () => {
+          const diff = new Date(eventData.targetDate).getTime() - new Date().getTime();
+          if (diff <= 0) {
+            setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isGraduationDay: true });
+          } else {
+            setTimeLeft({
+              days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+              hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+              minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+              seconds: Math.floor((diff % (1000 * 60)) / 1000),
+              isGraduationDay: false
+            });
+          }
+        };
+        calculate();
+        const interval = setInterval(calculate, 1000);
+        return () => clearInterval(interval);
+      }, []);
+
+      const handleShare = async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: `دعوة تخرج ${eventData.graduateName}`,
+              url: window.location.href,
+            });
+          } catch(e) {}
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2500);
+        }
+      };
+
+      return (
+        <div className="relative min-h-screen text-slate-800 bg-[#0f172a]">
+          {/* الصوت المرفوع audio.mp3 */}
+          <audio ref={audioRef} src="audio.mp3" loop preload="auto" />
+
+          {/* الشريط العلوي */}
+          <header className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between pointer-events-none">
+            <button
+              onClick={toggleSound}
+              className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-slate-800 shadow-lg backdrop-blur border border-white/60 transition-all active:scale-95 text-xs font-semibold"
+            >
+              <i data-lucide={isPlayingAudio ? "volume-2" : "volume-x"} className="w-4 h-4 text-amber-600"></i>
+              <span>{isPlayingAudio ? "الموسيقى تعمل" : "تشغيل الصوت"}</span>
+            </button>
+
+            <button
+              onClick={handleShare}
+              className="pointer-events-auto flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold shadow-lg transition-all active:scale-95"
+            >
+              <i data-lucide="share-2" className="w-3.5 h-3.5"></i>
+              <span>مشاركة</span>
+            </button>
+          </header>
+
+          {copied && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full bg-slate-900 text-amber-300 border border-amber-500/40 shadow-xl text-xs font-medium animate-bounce">
+              تم نسخ رابط الدعوة بنجاح!
+            </div>
           )}
-        </button>
 
-        {/* Share Action Button */}
-        <div className="flex items-center gap-2 pointer-events-auto">
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-medium shadow-lg hover:shadow-amber-500/30 transition-all hover:scale-105"
-            title="مشاركة الرابط"
-          >
-            <Share2 className="w-3.5 h-3.5" />
-            <span>مشاركة الدعوة</span>
-          </button>
-        </div>
-      </header>
-
-      {/* Copy Notification Toast */}
-      {copiedNotification && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full bg-slate-900/95 text-amber-300 border border-amber-500/30 shadow-2xl flex items-center gap-2 text-sm font-medium animate-bounce">
-          <Check className="w-4 h-4 text-emerald-400" />
-          تم نسخ رابط الدعوة بنجاح!
-        </div>
-      )}
-
-      {/* =========================================================================
-          SECTION 1: THE CINEMATIC OPENING CELESTIAL CANVAS (Full Screen Experience)
-          ========================================================================= */}
-      <section className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#b8ddf8] via-[#e2f0fb] to-[#f4f9fd] px-6 py-12 md:py-16 select-none">
-        
-        {/* Atmospheric Sky Visual Depth Layers (Volumetric Parallax Clouds & Golden Sun Rays) */}
-        <div 
-          className="absolute inset-0 pointer-events-none transition-transform duration-700 ease-out"
-          style={{
-            transform: `translate3d(${mousePos.x * 0.4}px, ${mousePos.y * 0.4}px, 0)`
-          }}
-        >
-          {/* Subtle Golden Sun Glow in high center */}
-          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-amber-300/40 via-amber-200/20 to-transparent rounded-full animate-golden-pulse" />
-          
-          {/* Volumetric Soft Sun Rays */}
-          <div className="absolute top-[-20%] left-[25%] w-[80px] h-[120vh] bg-gradient-to-b from-white/35 to-transparent transform -rotate-12 blur-2xl animate-light-beam" />
-          <div className="absolute top-[-15%] right-[25%] w-[120px] h-[130vh] bg-gradient-to-b from-amber-100/30 to-transparent transform rotate-12 blur-3xl animate-light-beam" style={{ animationDelay: '2.5s' }} />
-
-          {/* Cloud Layer 1: Background Ethereal Clouds */}
-          <div className="absolute top-[8%] left-[-8%] w-[650px] h-[350px] bg-white/45 rounded-full filter blur-[75px] animate-drift" />
-          <div className="absolute top-[20%] right-[-10%] w-[750px] h-[400px] bg-white/55 rounded-full filter blur-[85px] animate-drift" style={{ animationDirection: 'reverse' }} />
-
-          {/* Cloud Layer 2: Midground Volumetric Clouds */}
-          <div className="absolute bottom-[2%] left-[-15%] w-[900px] h-[450px] bg-gradient-to-t from-white via-white/80 to-transparent rounded-full filter blur-[55px] animate-float-slow" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[1000px] h-[550px] bg-gradient-to-t from-white via-white/90 to-transparent rounded-full filter blur-[60px] animate-float-slow" style={{ animationDelay: '4s' }} />
-        </div>
-
-        {/* Ethereal Floating Particles (Sparkles of accomplishment) */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(14)].map((_, i) => (
-            <div 
-              key={i}
-              className="absolute w-1.5 h-1.5 bg-amber-400/60 rounded-full blur-[0.5px]"
-              style={{
-                top: `${(i * 7 + 12) % 95}%`,
-                left: `${(i * 13 + 8) % 92}%`,
-                animation: `floatSlow ${7 + (i % 5)}s ease-in-out infinite`,
-                animationDelay: `${i * 0.45}s`,
-                opacity: 0.35 + (i % 4) * 0.15
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Top Decorative Emblem */}
-        <div className="relative z-10 pt-4 flex flex-col items-center">
-          <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-md shadow-lg shadow-sky-100 flex items-center justify-center border border-amber-300/60 transition-transform duration-700 hover:rotate-45">
-            <Sparkles className="w-6 h-6 text-amber-600" />
-          </div>
-          <span className="text-[11px] md:text-xs tracking-[0.25em] text-slate-500 uppercase mt-2 font-medium">
-            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-          </span>
-        </div>
-
-        {/* Central Kinetic Typography: Sacred Gratitude & Commencement Quote */}
-        <div className="relative z-10 max-w-4xl mx-auto text-center px-4 my-auto space-y-8">
-          <div className="space-y-6">
-            {/* Phased Appearance of Line 1 */}
-            <p 
-              className={`font-quran text-2xl sm:text-3xl md:text-5xl lg:text-[3.25rem] text-slate-800 leading-[1.8] sm:leading-[1.7] md:leading-[1.8] tracking-wide transition-all duration-1000 ease-out transform ${
-                openingTextRevealed 
-                  ? 'opacity-100 translate-y-0 scale-100 filter drop-shadow-sm' 
-                  : 'opacity-0 translate-y-8 scale-95'
-              }`}
-            >
-              <span className="relative inline-block">
-                {prayerLine1}
-                <span className="absolute -inset-1 bg-amber-200/20 blur-xl -z-10 rounded-full" />
-              </span>
-            </p>
-
-            {/* Phased Appearance of Line 2 */}
-            <p 
-              className={`font-quran text-2xl sm:text-3xl md:text-5xl lg:text-[3.25rem] text-amber-900/90 leading-[1.8] sm:leading-[1.7] md:leading-[1.8] tracking-wide transition-all duration-1000 delay-500 ease-out transform ${
-                openingTextRevealed 
-                  ? 'opacity-100 translate-y-0 scale-100 filter drop-shadow-sm' 
-                  : 'opacity-0 translate-y-8 scale-95'
-              }`}
-            >
-              <span className="relative inline-block">
-                {prayerLine2}
-                <span className="absolute -inset-2 bg-gradient-to-r from-amber-300/30 via-yellow-200/40 to-amber-300/30 blur-2xl -z-10 rounded-full" />
-              </span>
-            </p>
-          </div>
-
-          {/* Subtitle / Contextual Tag */}
-          <div 
-            className={`transition-all duration-1000 delay-1000 transform ${
-              openingTextRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            }`}
-          >
-            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/70 backdrop-blur-md border border-amber-300/40 shadow-sm text-xs sm:text-sm font-medium text-slate-700">
-              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-              <span>لحظة الفرح وبداية مشوار جديد</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Cinematic Descent Trigger */}
-        <div className="relative z-10 pb-4 text-center">
-          <button
-            onClick={handleBeginDescent}
-            className="group relative inline-flex flex-col items-center gap-3 px-8 py-4 rounded-full bg-white/85 hover:bg-white text-slate-800 shadow-xl shadow-sky-200/60 border border-amber-300/60 transition-all duration-500 hover:scale-105 active:scale-95"
-          >
-            <span className="font-alexandria text-sm sm:text-base font-semibold tracking-wide text-slate-800 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-600 transition-transform group-hover:rotate-12" />
-              مشاهدة بطاقة الدعوة
-            </span>
-            <div className="w-8 h-8 rounded-full bg-amber-50 group-hover:bg-amber-100 flex items-center justify-center text-amber-700 transition-colors">
-              <ChevronDown className="w-5 h-5 animate-bounce" />
-            </div>
+          {/* القسم 1: المشهد السماوي الافتتاحي */}
+          <section className="relative w-full min-h-screen flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#b8ddf8] via-[#e2f0fb] to-[#f4f9fd] px-6 py-16 select-none">
             
-            {/* Soft luminous pulse around button */}
-            <span className="absolute -inset-1 rounded-full bg-amber-400/20 blur-md group-hover:bg-amber-400/40 transition-all -z-10" />
-          </button>
-          
-          <p className="text-[11px] text-slate-500 mt-3 font-normal">
-            اضغط للانتقال إلى تفاصيل الحفل
-          </p>
-        </div>
-
-        {/* Transitioning Fog Overlay */}
-        {currentScene === 'transitioning' && (
-          <div className="fixed inset-0 z-40 bg-white/80 backdrop-blur-md transition-opacity duration-700 pointer-events-none" />
-        )}
-      </section>
-
-      {/* =========================================================================
-          SECTION 2: THE LUXURY INVITATION EXPERIENCE (Card, Countdown, Details)
-          ========================================================================= */}
-      <section 
-        ref={invitationRef}
-        className="relative w-full min-h-screen py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#f4f9fd] via-[#eef6fc] to-[#0f172a] text-slate-900 overflow-hidden flex flex-col items-center justify-center"
-      >
-        {/* Subtle Ambient Background Lighting for the Invitation Zone */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-sky-200/40 via-amber-100/20 to-transparent rounded-full filter blur-[100px] pointer-events-none" />
-        
-        {/* Atmospheric Floating Dust / Star Sparkles */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(10)].map((_, i) => (
-            <div 
-              key={`inv-particle-${i}`}
-              className="absolute w-1 h-1 bg-amber-400/50 rounded-full"
-              style={{
-                top: `${(i * 11) % 90}%`,
-                left: `${(i * 17) % 94}%`,
-                animation: `floatSlow ${8 + i}s ease-in-out infinite`,
-                animationDelay: `${i * 0.7}s`
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="relative z-10 max-w-3xl w-full mx-auto space-y-12">
-          
-          {/* THE MASTER INVITATION CARD (Luxury Minimalist Glassmorphism with Gold Border) */}
-          <div 
-            className="relative bg-white/90 cinematic-blur-backdrop rounded-[2.5rem] p-6 sm:p-10 md:p-14 shadow-2xl shadow-sky-900/10 border border-amber-200/80 gold-border-glow transition-all duration-700"
-            style={{
-              transform: `perspective(1000px) rotateX(${mousePos.y * 0.15}deg) rotateY(${mousePos.x * -0.15}deg)`
-            }}
-          >
-            {/* Elegant Corner Geometric Ornaments */}
-            <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-amber-500/70 rounded-tr-xl pointer-events-none" />
-            <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-amber-500/70 rounded-tl-xl pointer-events-none" />
-            <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-amber-500/70 rounded-br-xl pointer-events-none" />
-            <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-amber-500/70 rounded-bl-xl pointer-events-none" />
-
-            {/* Inner Border Line */}
-            <div className="absolute inset-3 rounded-[2.2rem] border border-amber-100/80 pointer-events-none" />
-
-            {/* Header: Warm & Friendly Greeting */}
-            <div className="text-center space-y-3">
-              <div className="inline-flex items-center justify-center gap-2 px-5 py-1.5 rounded-full bg-gradient-to-r from-amber-50 via-amber-100/70 to-amber-50 border border-amber-200/80 text-amber-900 text-xs sm:text-sm font-semibold tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                بكل حب وامتنان
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              </div>
-              
-              <h2 className="text-base sm:text-lg md:text-xl text-slate-700 font-normal leading-relaxed max-w-xl mx-auto pt-2">
-                يسعدني ويشرفني حضوركم لتشاركوني فرحة التخرج بعد سنوات من الجهد والتعب
-              </h2>
-
-              <div className="flex items-center justify-center gap-3 pt-1">
-                <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-amber-400" />
-                <span className="text-xs tracking-[0.3em] text-amber-700 uppercase font-bold">
-                  دعوة تخرج
-                </span>
-                <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-amber-400" />
-              </div>
+            {/* إضاءات وغيوم */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[600px] h-[450px] bg-amber-300/35 rounded-full animate-golden-pulse"></div>
+              <div className="absolute top-[5%] left-[-10%] w-[600px] h-[300px] bg-white/50 rounded-full blur-[70px] animate-drift"></div>
+              <div className="absolute bottom-0 right-[-10%] w-[700px] h-[400px] bg-white/70 rounded-full blur-[60px] animate-float-slow"></div>
             </div>
 
-            {/* Graduate Portrait Section */}
-            <div className="my-8 flex flex-col items-center justify-center">
-              <div className="relative group">
-                {/* Golden ambient halo */}
-                <div className="absolute -inset-3 bg-gradient-to-r from-amber-300/40 via-yellow-200/30 to-amber-400/40 rounded-full blur-xl group-hover:blur-2xl transition-all duration-700 opacity-80" />
+            {/* البسملة */}
+            <div className="relative z-10 pt-4 flex flex-col items-center">
+              <div className="w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center border border-amber-300">
+                <i data-lucide="sparkles" className="w-5 h-5 text-amber-600"></i>
+              </div>
+              <span className="text-[11px] tracking-widest text-slate-500 mt-2">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
+            </div>
+
+            {/* النص القرآني / الدعاء */}
+            <div className="relative z-10 max-w-3xl mx-auto text-center px-4 my-auto space-y-6">
+              <p className={`font-quran text-2xl sm:text-4xl md:text-5xl text-slate-800 leading-relaxed transition-all duration-1000 ${
+                openingTextRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}>
+                {prayerLine1}
+              </p>
+              <p className={`font-quran text-2xl sm:text-4xl md:text-5xl text-amber-900 leading-relaxed transition-all duration-1000 delay-300 ${
+                openingTextRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}>
+                {prayerLine2}
+              </p>
+            </div>
+
+            {/* زر الانتقال */}
+            <div className="relative z-10 pb-6 text-center">
+              <button
+                onClick={handleDescent}
+                className="inline-flex flex-col items-center gap-2 px-8 py-3.5 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-xl border border-amber-300/80 transition-all hover:scale-105 active:scale-95"
+              >
+                <span className="text-sm font-bold flex items-center gap-2">
+                  <i data-lucide="sparkles" className="w-4 h-4 text-amber-600"></i>
+                  مشاهدة بطاقة الدعوة
+                </span>
+                <i data-lucide="chevron-down" className="w-4 h-4 text-amber-600 animate-bounce"></i>
+              </button>
+            </div>
+          </section>
+
+          {/* القسم 2: البطاقة والتفاصيل والعد التنازلي */}
+          <section ref={invitationRef} className="relative w-full min-h-screen py-16 px-4 sm:px-6 bg-gradient-to-b from-[#f4f9fd] via-[#eef6fc] to-[#0f172a] flex flex-col items-center">
+            
+            <div className="relative z-10 max-w-2xl w-full mx-auto space-y-10">
+              
+              {/* بطاقة الدعوة */}
+              <div className="relative bg-white/95 cinematic-blur rounded-3xl p-6 sm:p-10 shadow-2xl border border-amber-200 gold-border-glow text-center">
                 
-                {/* Frame border */}
-                <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full p-1.5 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-xl overflow-hidden">
-                  <div className="w-full h-full rounded-full overflow-hidden bg-slate-100 border-2 border-white relative">
+                {/* شارة الترحيب */}
+                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold mb-4">
+                  <i data-lucide="sparkles" className="w-3.5 h-3.5 text-amber-600"></i>
+                  بكل حب وامتنان
+                  <i data-lucide="sparkles" className="w-3.5 h-3.5 text-amber-600"></i>
+                </div>
+
+                <h2 className="text-base sm:text-lg text-slate-700 max-w-lg mx-auto mb-6">
+                  يسعدني ويشرفني حضوركم لتشاركوني فرحة التخرج بعد سنوات من الجهد والتعب
+                </h2>
+
+                {/* صورة الخريج */}
+                <div className="my-6 flex flex-col items-center">
+                  <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full p-1.5 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-xl">
                     <img 
                       src={eventData.imageSrc} 
-                      onError={(e) => {
-                        // في حال لم يتم العثور على graduate.jpg يتم استخدام الصورة الاحتياطية
-                        (e.target as HTMLImageElement).src = eventData.fallbackImage;
-                      }}
                       alt={eventData.graduateName}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
+                      className="w-full h-full rounded-full object-cover object-top border-2 border-white"
+                      onError={(e) => {
+                        // صورة احتياطية إذا لم يتم رفع graduate.jpg بعد
+                        e.target.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80";
+                      }}
                     />
                   </div>
-                </div>
 
-                {/* Academic Achievement Badge */}
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-600 to-amber-500 text-white px-4 py-1 rounded-full shadow-lg border border-amber-200/80 flex items-center gap-1.5 text-xs font-bold whitespace-nowrap">
-                  <Award className="w-3.5 h-3.5" />
-                  <span>دفعة 2026</span>
-                </div>
-              </div>
-
-              {/* Graduate Name & Credentials */}
-              <div className="text-center mt-6 space-y-2">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight font-alexandria">
-                  {eventData.graduateName}
-                </h1>
-                
-                <div className="flex flex-col items-center gap-1">
-                  <p className="text-lg sm:text-xl font-semibold text-amber-700">
+                  <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-5 font-alexandria">
+                    {eventData.graduateName}
+                  </h1>
+                  <p className="text-base sm:text-lg font-semibold text-amber-700 mt-1">
                     {eventData.degree}
                   </p>
-                  <p className="text-sm sm:text-base text-slate-500 font-medium">
+                  <p className="text-sm text-slate-500">
                     {eventData.university}
                   </p>
                 </div>
-              </div>
-            </div>
 
-            {/* Separator Line */}
-            <div className="w-full max-w-md mx-auto my-6 flex items-center justify-center">
-              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-amber-200 to-transparent" />
-            </div>
-
-            {/* Date Banner */}
-            <div className="text-center pb-2">
-              <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-1">
-                موعدنا معكم
-              </p>
-              <div className="inline-block px-6 py-2.5 rounded-2xl bg-amber-50/70 border border-amber-200/70 text-slate-800 font-bold text-base sm:text-lg">
-                {eventData.displayDate}
-              </div>
-            </div>
-
-          </div>
-
-          {/* =========================================================================
-              SECTION 3: LIVE REAL-TIME COUNTDOWN TIMER (Iraq Asia/Baghdad Timezone)
-              ========================================================================= */}
-          <div className="space-y-4">
-            <div className="text-center space-y-1">
-              <span className="text-xs uppercase font-bold tracking-[0.25em] text-amber-400">
-                العد التنازلي للحفل
-              </span>
-              <h3 className="text-xl sm:text-2xl font-bold text-white">
-                {timeLeft.isGraduationDay ? "اليوم يوم التخرج!" : "ننتظركم بكل محبة"}
-              </h3>
-            </div>
-
-            {timeLeft.isGraduationDay ? (
-              <div className="p-8 rounded-3xl bg-gradient-to-r from-amber-500/20 via-amber-400/30 to-amber-500/20 border border-amber-400/50 backdrop-blur-xl text-center shadow-2xl animate-pulse">
-                <h4 className="text-3xl sm:text-4xl font-extrabold text-amber-300 mb-2">
-                  🎉 اليوم يوم التخرج المبارك! 🎉
-                </h4>
-                <p className="text-slate-200 text-sm sm:text-base max-w-lg mx-auto">
-                  أهلاً وسهلاً بكم، حضوركم يكمل فرحتنا ويسعدنا جداً!
-                </p>
-              </div>
-            ) : (
-              <div dir="ltr" className="grid grid-cols-4 gap-2.5 sm:gap-4 md:gap-6">
-                {[
-                  { label: 'أيام', value: timeLeft.days },
-                  { label: 'ساعات', value: timeLeft.hours },
-                  { label: 'دقائق', value: timeLeft.minutes },
-                  { label: 'ثوانٍ', value: timeLeft.seconds },
-                ].map((item, index) => (
-                  <div 
-                    key={index} 
-                    className="relative group bg-white/10 hover:bg-white/15 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-3 sm:p-5 md:p-6 border border-white/20 text-center shadow-xl transition-all duration-300 hover:-translate-y-1"
-                  >
-                    <div className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white font-mono tracking-tight group-hover:text-amber-300 transition-colors">
-                      {String(item.value).padStart(2, '0')}
-                    </div>
-                    <div className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-300 mt-1">
-                      {item.label}
-                    </div>
-                    {/* Inner gold rim subtle shine */}
-                    <div className="absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-amber-300/40 to-transparent" />
+                {/* تاريخ الحفل */}
+                <div className="mt-6 pt-4 border-t border-amber-100">
+                  <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider block mb-1">موعدنا معكم</span>
+                  <div className="inline-block px-6 py-2 rounded-xl bg-amber-50 border border-amber-200 text-slate-800 font-bold text-base">
+                    {eventData.displayDate}
                   </div>
-                ))}
+                </div>
               </div>
-            )}
-          </div>
 
-          {/* =========================================================================
-              SECTION 4: EVENT LOGISTICS & LOCATION CARDS
-              ========================================================================= */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
-            {/* Card: Date */}
-            <div className="bg-white/95 rounded-2xl p-6 border border-slate-100 shadow-xl flex items-start gap-4 hover:shadow-2xl transition-all">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
-                <Calendar className="w-6 h-6" />
+              {/* العد التنازلي: يبدأ من اليسار (أيام -> ساعات -> دقائق -> ثوانٍ) */}
+              <div className="space-y-4">
+                <div className="text-center">
+                  <span className="text-xs uppercase font-bold tracking-widest text-amber-400">العد التنازلي للحفل</span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
+                    {timeLeft.isGraduationDay ? "اليوم يوم التخرج!" : "ننتظركم بكل محبة"}
+                  </h3>
+                </div>
+
+                {timeLeft.isGraduationDay ? (
+                  <div className="p-6 rounded-2xl bg-amber-500/20 border border-amber-400/50 text-center text-amber-300 font-bold text-2xl">
+                    🎉 اليوم يوم التخرج المبارك! 🎉
+                  </div>
+                ) : (
+                  <div dir="ltr" className="grid grid-cols-4 gap-2.5 sm:gap-4">
+                    {[
+                      { label: 'أيام', val: timeLeft.days },
+                      { label: 'ساعات', val: timeLeft.hours },
+                      { label: 'دقائق', val: timeLeft.minutes },
+                      { label: 'ثوانٍ', val: timeLeft.seconds },
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-5 border border-white/20 text-center">
+                        <div className="text-2xl sm:text-4xl font-extrabold text-white font-mono">
+                          {String(item.val).padStart(2, '0')}
+                        </div>
+                        <div className="text-[11px] sm:text-xs font-semibold text-slate-300 mt-1">
+                          {item.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-              <div className="space-y-1">
-                <span className="text-xs font-semibold text-slate-400">التاريخ</span>
-                <h4 className="font-bold text-slate-800 text-sm sm:text-base">22 / 11 / 2026</h4>
-                <p className="text-xs text-slate-500">يوم الأحد</p>
+
+              {/* تفاصيل الحفل */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
+                    <i data-lucide="calendar" className="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-400 font-semibold block">التاريخ</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-800">22 / 11 / 2026</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
+                    <i data-lucide="clock" className="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-400 font-semibold block">الوقت</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-800">09:30 صباحاً</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
+                    <i data-lucide="map-pin" className="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-400 font-semibold block">المكان</span>
+                    <a href={eventData.mapsUrl} target="_blank" rel="noopener noreferrer" className="text-xs sm:text-sm font-bold text-amber-600 hover:underline">
+                      جامعة الكوت
+                    </a>
+                  </div>
+                </div>
               </div>
+
+              {/* العبارة الختامية */}
+              <div className="text-center pt-6 space-y-4">
+                <p className="font-quran text-xl sm:text-2xl text-amber-200/90 leading-relaxed max-w-lg mx-auto">
+                  "وجودكم يكتمل به فرحي، وبحضوركم تصبح هذه اللحظة ذكرى لا تُنسى."
+                </p>
+                <div className="text-xs text-slate-400">
+                  <p>أدام الله الأفراح في بيوتكم وعوائلكم الكريمة</p>
+                  <p className="font-semibold text-slate-300 mt-1">أخوكم حسين عادل صبري</p>
+                </div>
+              </div>
+
             </div>
 
-            {/* Card: Time */}
-            <div className="bg-white/95 rounded-2xl p-6 border border-slate-100 shadow-xl flex items-start gap-4 hover:shadow-2xl transition-all">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
-                <Clock className="w-6 h-6" />
-              </div>
-              <div className="space-y-1">
-                <span className="text-xs font-semibold text-slate-400">الوقت</span>
-                <h4 className="font-bold text-slate-800 text-sm sm:text-base">{eventData.time}</h4>
-                <p className="text-xs text-slate-500">صباحاً</p>
-              </div>
-            </div>
+            {/* الفوتر وحقوق التصميم */}
+            <footer className="w-full text-center text-slate-500 text-[11px] pt-12 pb-6 border-t border-slate-800/80 mt-12 flex flex-col items-center gap-2">
+              <p>© جميع الحقوق محفوظة لـ <span className="font-semibold text-amber-400">roya_othar</span></p>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="text-amber-500 hover:text-amber-400 text-xs mt-1"
+              >
+                العودة إلى البداية ↑
+              </button>
+            </footer>
 
-            {/* Card: Location */}
-            <div className="bg-white/95 rounded-2xl p-6 border border-slate-100 shadow-xl flex items-start gap-4 hover:shadow-2xl transition-all">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
-                <MapPin className="w-6 h-6" />
-              </div>
-              <div className="space-y-1 flex-1">
-                <span className="text-xs font-semibold text-slate-400">المكان</span>
-                <h4 className="font-bold text-slate-800 text-sm sm:text-base">{eventData.location}</h4>
-                <a 
-                  href={eventData.mapsUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-amber-600 hover:text-amber-700 font-semibold mt-1 transition-colors"
-                >
-                  <span>فتح في الخريطة</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-            </div>
-
-          </div>
-
-          {/* =========================================================================
-              SECTION 5: CLOSING GRATITUDE
-              ========================================================================= */}
-          <div className="text-center pt-8 pb-12 space-y-6">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 border border-amber-400/30">
-              <Heart className="w-5 h-5 fill-amber-400" />
-            </div>
-
-            <p className="font-quran text-xl sm:text-2xl md:text-3xl text-amber-200/90 leading-relaxed max-w-xl mx-auto font-normal">
-              "وجودكم يكتمل به فرحي، وبحضوركم تصبح هذه اللحظة ذكرى لا تُنسى."
-            </p>
-
-            <div className="text-xs text-slate-400 space-y-1">
-              <p>أدام الله الأفراح في بيوتكم وعوائلكم الكريمة</p>
-              <p className="font-semibold text-slate-300">أخوكم حسين عادل صبري</p>
-            </div>
-          </div>
-
+          </section>
         </div>
+      );
+    }
 
-        {/* Footer Credit & Return to top */}
-        <footer className="w-full text-center text-slate-500 text-[11px] pt-12 border-t border-slate-800 flex flex-col items-center gap-3">
-          <p>© جميع الحقوق محفوظة لـ <span className="font-semibold text-amber-400/90 font-mono">roya_othar</span></p>
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-amber-500 hover:text-amber-400 transition-colors flex items-center gap-1 text-xs"
-          >
-            <span>العودة إلى البداية</span>
-            <ChevronDown className="w-3.5 h-3.5 rotate-180" />
-          </button>
-        </footer>
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 
-      </section>
-    </div>
-  );
-}
+    // تفعيل الأيقونات تلقائياً
+    window.addEventListener('load', () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+    setInterval(() => {
+      if (window.lucide) window.lucide.createIcons();
+    }, 1000);
+  </script>
+</body>
+</html>
