@@ -258,12 +258,14 @@
 
   </section>
 
-  <!-- مشغل الصوت الخفي -->
-  <audio id="bg-audio" src="https://github.com/user-attachments/files/34528319/audio.mp3" loop preload="auto"></audio>
+  <!-- مشغل الصوت مع رابط Catbox المباشر الموثوق -->
+  <audio id="bg-audio" src="https://files.catbox.moe/uutrk1.mp3" loop preload="auto"></audio>
 
   <script>
-    // الإعدادات
-    const ENABLE_AUDIO_FEATURE = true; // تم تفعيل الصوت وزر التحكم
+    // ==========================================
+    // إعدادات وبيانات الحفل
+    // ==========================================
+    const ENABLE_AUDIO_FEATURE = true;
     const TARGET_DATE = new Date("2026-11-22T09:30:00+03:00").getTime();
     const audio = document.getElementById('bg-audio');
     const audioBtn = document.getElementById('audio-toggle-btn');
@@ -275,30 +277,47 @@
       audioBtn.classList.remove('hidden');
     }
 
+    // ==========================================
+    // نظام التحكم بالصوت
+    // ==========================================
+    function updateAudioUI(playing) {
+      isPlaying = playing;
+      if (audioIcon && audioText) {
+        audioIcon.textContent = playing ? '🔊' : '🔇';
+        audioText.textContent = playing ? 'الموسيقى تعمل' : 'تشغيل الصوت';
+      }
+    }
+
     function toggleAudio() {
       if (!audio) return;
       if (isPlaying) {
         audio.pause();
-        isPlaying = false;
-        audioIcon.textContent = '🔇';
-        audioText.textContent = 'تشغيل الصوت';
+        updateAudioUI(false);
       } else {
         audio.play().then(() => {
-          isPlaying = true;
-          audioIcon.textContent = '🔊';
-          audioText.textContent = 'الموسيقى تعمل';
-        }).catch(e => console.log('Audio error:', e));
+          updateAudioUI(true);
+        }).catch(err => {
+          console.warn('Audio playback blocked or waiting for user interaction:', err);
+        });
       }
     }
 
+    // ==========================================
+    // الانتقال السلس والمشهد السينمائي
+    // ==========================================
     function handleDescent() {
-      document.getElementById('invitation-section').scrollIntoView({ behavior: 'smooth' });
-      if (!isPlaying && audio) {
+      const targetSection = document.getElementById('invitation-section');
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      
+      // محاولة تشغيل الصوت تلقائياً بعد تفاعل المستخدم
+      if (!isPlaying && audio && ENABLE_AUDIO_FEATURE) {
         audio.play().then(() => {
-          isPlaying = true;
-          audioIcon.textContent = '🔊';
-          audioText.textContent = 'الموسيقى تعمل';
-        }).catch(() => {});
+          updateAudioUI(true);
+        }).catch(() => {
+          // في حال تم حظر التشغيل من قبل متصفح الجهاز
+        });
       }
     }
 
@@ -306,37 +325,60 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // ==========================================
+    // وظيفة مشاركة الرابط
+    // ==========================================
     function handleShare() {
+      const shareTitle = 'دعوة تخرج | حسين عادل صبري';
+      const shareText = 'يسعدني ويشرفني حضوركم لتشاركوني فرحة التخرج بعد سنوات من الجهد والتعب';
+      const shareUrl = window.location.href;
+
       if (navigator.share) {
         navigator.share({
-          title: 'دعوة تخرج حسين عادل صبري',
-          text: 'يسعدني دعوتكم لحضور حفل تخرجي',
-          url: window.location.href
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl
         }).catch(() => {});
       } else {
-        const tempInput = document.createElement('input');
-        tempInput.value = window.location.href;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
+        // بديل متوافق لنسخ الرابط
+        try {
+          const tempInput = document.createElement('input');
+          tempInput.value = shareUrl;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
 
-        const toast = document.getElementById('copy-toast');
-        toast.classList.remove('hidden');
-        setTimeout(() => toast.classList.add('hidden'), 2500);
+          const toast = document.getElementById('copy-toast');
+          if (toast) {
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+          }
+        } catch (e) {
+          console.error('Clipboard copy error:', e);
+        }
       }
     }
 
+    // ==========================================
+    // العد التنازلي التفاعلي الدقيق
+    // ==========================================
     function updateCountdown() {
       const now = new Date().getTime();
       const distance = TARGET_DATE - now;
 
+      const daysVal = document.getElementById('days-val');
+      const hoursVal = document.getElementById('hours-val');
+      const minutesVal = document.getElementById('minutes-val');
+      const secondsVal = document.getElementById('seconds-val');
+      const statusTitle = document.getElementById('countdown-status');
+
       if (distance <= 0) {
-        document.getElementById('countdown-status').textContent = '🎉 اليوم يوم التخرج المبارك! 🎉';
-        document.getElementById('days-val').textContent = '00';
-        document.getElementById('hours-val').textContent = '00';
-        document.getElementById('minutes-val').textContent = '00';
-        document.getElementById('seconds-val').textContent = '00';
+        if (statusTitle) statusTitle.textContent = '🎉 اليوم يوم التخرج المبارك! 🎉';
+        if (daysVal) daysVal.textContent = '00';
+        if (hoursVal) hoursVal.textContent = '00';
+        if (minutesVal) minutesVal.textContent = '00';
+        if (secondsVal) secondsVal.textContent = '00';
         return;
       }
 
@@ -345,12 +387,33 @@
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      document.getElementById('days-val').textContent = String(days).padStart(2, '0');
-      document.getElementById('hours-val').textContent = String(hours).padStart(2, '0');
-      document.getElementById('minutes-val').textContent = String(minutes).padStart(2, '0');
-      document.getElementById('seconds-val').textContent = String(seconds).padStart(2, '0');
+      const formatNum = (num) => String(num).padStart(2, '0');
+
+      if (daysVal && daysVal.textContent !== formatNum(days)) daysVal.textContent = formatNum(days);
+      if (hoursVal && hoursVal.textContent !== formatNum(hours)) hoursVal.textContent = formatNum(hours);
+      if (minutesVal && minutesVal.textContent !== formatNum(minutes)) minutesVal.textContent = formatNum(minutes);
+      if (secondsVal && secondsVal.textContent !== formatNum(seconds)) secondsVal.textContent = formatNum(seconds);
     }
 
+    // ==========================================
+    // مؤثرات بصرية تفاعلية (Parallax & Depth)
+    // ==========================================
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      window.addEventListener('mousemove', (e) => {
+        const { clientX, clientY } = e;
+        const xOffset = (clientX / window.innerWidth - 0.5) * 12;
+        const yOffset = (clientY / window.innerHeight - 0.5) * 12;
+
+        const card = document.querySelector('.gold-border-glow');
+        if (card && window.scrollY > 150) {
+          card.style.transform = `perspective(1000px) rotateX(${-yOffset * 0.3}deg) rotateY(${xOffset * 0.3}deg)`;
+        }
+      }, { passive: true });
+    }
+
+    // تشغيل العداد عند التحميل
     setInterval(updateCountdown, 1000);
     updateCountdown();
   </script>
